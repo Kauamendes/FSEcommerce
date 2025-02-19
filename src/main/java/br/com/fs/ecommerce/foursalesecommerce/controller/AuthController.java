@@ -2,7 +2,11 @@ package br.com.fs.ecommerce.foursalesecommerce.controller;
 
 import br.com.fs.ecommerce.foursalesecommerce.config.security.TokenService;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
+import br.com.fs.ecommerce.foursalesecommerce.dto.AuthDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.LoginDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
+import br.com.fs.ecommerce.foursalesecommerce.exception.EmailOuSenhaIncorretoException;
+import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,30 +28,32 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginDto loginDto){
-        Usuario usuario = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
-        if(passwordEncoder.matches(body.password(), user.getPassword())) {
-            String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(user.getName(), token));
+    public AuthDto login(@RequestBody LoginDto loginDto){
+        Usuario usuario = this.repository.findByEmail(loginDto.getEmail())
+                .orElseThrow(() -> new RegistroNaoEncontradoException("Usuario"));
+
+        if (passwordEncoder.matches(loginDto.getSenha(), usuario.getSenha())) {
+            return AuthDto.builder()
+                    .token(this.tokenService.generateToken(usuario))
+                    .build();
         }
-        return ResponseEntity.badRequest().build();
+
+        throw new EmailOuSenhaIncorretoException("Email ou senha incorretos");
     }
 
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterRequestDTO body){
-        Optional<Usuario> usuario = this.repository.findByEmail(body.email());
+    public UsuarioDto register(@RequestBody UsuarioDto usuarioDto){
+        Optional<Usuario> usuario = this.repository.findByEmail(usuarioDto.getEmail());
 
-        if(user.isEmpty()) {
-            User newUser = new User();
-            newUser.setPassword(passwordEncoder.encode(body.password()));
-            newUser.setEmail(body.email());
-            newUser.setName(body.name());
-            this.repository.save(newUser);
+        if (usuario.isPresent()) {
 
-            String token = this.tokenService.generateToken(newUser);
-            return ResponseEntity.ok(new ResponseDTO(newUser.getName(), token));
         }
+        Usuario newUser = new User();
+        newUser.setPassword(passwordEncoder.encode(body.password()));
+        newUser.setEmail(body.email());
+        newUser.setName(body.name());
+        this.repository.save(newUser);
         return ResponseEntity.badRequest().build();
     }
 }
