@@ -8,6 +8,7 @@ import br.com.fs.ecommerce.foursalesecommerce.exception.EmailOuSenhaIncorretoExc
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
+import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
-    public AuthDto logar(LoginDto loginDto) {
+    public AuthDto logar(LoginDto loginDto) throws AuthException {
         Usuario usuario = usuarioService.buscarPorEmail(loginDto.getEmail());
 
         if (passwordEncoder.matches(loginDto.getSenha(), usuario.getSenha())) {

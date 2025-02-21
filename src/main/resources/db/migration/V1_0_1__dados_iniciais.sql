@@ -1,6 +1,6 @@
 INSERT INTO usuario (id, nome, email, senha, role) VALUES
-                                                       (UUID(), 'Admin', 'admin@ecommerce.com', '$2a$12$oeMCFj6aLz8cVXf6R1nWQeM4E8LTdoFvbj6NooZS18W.dMppHLQRq', 'ADMIN'),
-                                                       (UUID(), 'Cliente 1', 'cliente1@ecommerce.com', '$2a$12$/sDNmGLgnBW4HP5.yPVj2.Ze6rAbEF7SY3cZtvs.WyN1ks9XDiNFq', 'USUARIO');
+                                                       (UUID(), 'Admin', 'admin@ecommerce.com', '$2a$12$oeMCFj6aLz8cVXf6R1nWQeM4E8LTdoFvbj6NooZS18W.dMppHLQRq', 'ROLE_ADMIN'),
+                                                       (UUID(), 'Cliente 1', 'cliente1@ecommerce.com', '$2a$12$/sDNmGLgnBW4HP5.yPVj2.Ze6rAbEF7SY3cZtvs.WyN1ks9XDiNFq', 'ROLE_USUARIO');
 
 -- Inserindo categorias
 INSERT INTO categoria (id, nome, descricao) VALUES

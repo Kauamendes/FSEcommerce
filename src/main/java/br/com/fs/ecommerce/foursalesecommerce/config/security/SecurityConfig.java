@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,8 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
+    private static final String ROTA_USUARIOS = "/usuarios/**";
     private static final String ROTA_PRODUTOS = "/produtos/**";
-    private static final String ROTA_PEDIDOS = "/pedidos/**";
     private static final String AUTH_LOGIN = "/auth/login";
 
     @Bean
@@ -32,14 +33,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers(HttpMethod.POST, AUTH_LOGIN).permitAll()
-                        .requestMatchers(HttpMethod.POST, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.PUT, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.DELETE, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.GET, ROTA_PRODUTOS).hasAnyRole(UserRole.ADMIN.name(), UserRole.USUARIO.name())
-                        .requestMatchers(HttpMethod.POST, ROTA_PEDIDOS).hasRole(UserRole.USUARIO.name())
+                        .requestMatchers(HttpMethod.POST, ROTA_USUARIOS).permitAll()
+                        .requestMatchers(HttpMethod.POST, ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
                         .anyRequest().authenticated()
                 )
+                .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

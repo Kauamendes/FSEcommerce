@@ -3,6 +3,7 @@ package br.com.fs.ecommerce.foursalesecommerce.controller;
 import br.com.fs.ecommerce.foursalesecommerce.dto.AuthDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.LoginDto;
 import br.com.fs.ecommerce.foursalesecommerce.service.impl.LoginService;
+import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -24,7 +25,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public HttpEntity<AuthDto> login(@RequestBody LoginDto loginDto){
+    public HttpEntity<AuthDto> login(@RequestBody LoginDto loginDto) throws AuthException {
        AuthDto authDto = loginService.logar(loginDto);
         return ResponseEntity.ok(authDto);
     }
