@@ -40,11 +40,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario atualizar(UsuarioDto usuarioDto, String id) {
-        return null;
+       if (!usuarioRepository.existsById(id)) {
+           throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName());
+       }
+       return usuarioRepository.save(Usuario.of(usuarioDto));
     }
 
     @Override
-    public Boolean excluir(String id) {
-        return null;
+    public void excluir(String id) {
+        if (usuarioRepository.existsById(id)) usuarioRepository.deleteById(id);
+        throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName());
     }
 }

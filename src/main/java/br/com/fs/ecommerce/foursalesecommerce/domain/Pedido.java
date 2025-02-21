@@ -3,6 +3,7 @@ package br.com.fs.ecommerce.foursalesecommerce.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,11 +29,12 @@ public class Pedido extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    private List<Produto> produtos = new ArrayList<>();
+    private List<PedidoProduto> pedidoProdutos = new ArrayList<>();
 
-    private Double subtotal;
+    @Column(precision = 10, scale = 2, nullable = false)
+    private BigDecimal subtotal;
 
     @PrePersist
     public void prePersist() {

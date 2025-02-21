@@ -2,8 +2,10 @@ package br.com.fs.ecommerce.foursalesecommerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories(basePackages = "br.com.fs.ecommerce.foursalesecommerce.repository")
 public class FourSalesEcommerceApplication {
 
     public static void main(String[] args) {

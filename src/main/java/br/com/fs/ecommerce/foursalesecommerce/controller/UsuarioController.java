@@ -32,7 +32,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping
-    public Boolean excluir(String id) {
-        return usuarioService.excluir(id);
+    public void excluir(String id) {
+        usuarioService.excluir(id);
     }
 }

@@ -13,5 +13,5 @@ public interface UsuarioService {
     Usuario buscarPorEmail(String email);
     Usuario salvar(UsuarioDto usuarioDto);
     Usuario atualizar(UsuarioDto usuarioDto, String id);
-    Boolean excluir(String id);
+    void excluir(String id);
 }

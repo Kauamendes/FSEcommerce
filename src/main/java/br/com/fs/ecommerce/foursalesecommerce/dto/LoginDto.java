@@ -13,7 +13,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class LoginDto implements Serializable {
 
-    private String nome;
     private String email;
     private String senha;
 }
