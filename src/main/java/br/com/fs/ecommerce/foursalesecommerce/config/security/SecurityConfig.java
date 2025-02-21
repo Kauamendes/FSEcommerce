@@ -31,18 +31,16 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers(HttpMethod.POST, AUTH_LOGIN).permitAll()
-//                        .requestMatchers(HttpMethod.POST, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
-//                        .requestMatchers(HttpMethod.PUT, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
-//                        .requestMatchers(HttpMethod.DELETE, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
-//                        .requestMatchers(HttpMethod.GET, ROTA_PRODUTOS).hasAnyRole(UserRole.ADMIN.name(), UserRole.USUARIO.name())
-//                        .requestMatchers(HttpMethod.POST, ROTA_PEDIDOS).hasRole(UserRole.USUARIO.name())
-//                        .anyRequest().authenticated()
-//                )
-//                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable);
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, AUTH_LOGIN).permitAll()
+                        .requestMatchers(HttpMethod.POST, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, ROTA_PRODUTOS).hasRole(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, ROTA_PRODUTOS).hasAnyRole(UserRole.ADMIN.name(), UserRole.USUARIO.name())
+                        .requestMatchers(HttpMethod.POST, ROTA_PEDIDOS).hasRole(UserRole.USUARIO.name())
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
