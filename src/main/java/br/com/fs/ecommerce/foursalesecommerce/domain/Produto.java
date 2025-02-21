@@ -1,5 +1,6 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -45,5 +46,13 @@ public class Produto extends BaseEntity {
         if (isNull(id)) {
             id = UUID.randomUUID().toString();
         }
+    }
+
+    public static Produto of(ProdutoDto produtoDto) {
+        return Produto.builder()
+                .id(produtoDto.getId())
+                .nome(produtoDto.getNome())
+                .descricao(produtoDto.getDescricao())
+                .build();
     }
 }

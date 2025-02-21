@@ -13,4 +13,5 @@ public interface PedidoService {
     Pedido salvar(PedidoDto pedidoDto);
     Pedido atualizar(PedidoDto pedidoDto, String id);
     void excluir(String id);
+    Pedido pagarPedido(String id);
 }

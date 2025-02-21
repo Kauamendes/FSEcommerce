@@ -1,5 +1,6 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoProdutoDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,5 +40,15 @@ public class PedidoProduto {
         if (isNull(id)) {
             id = UUID.randomUUID().toString();
         }
+    }
+
+    public static PedidoProduto of(PedidoProdutoDto pedidoProdutoDto) {
+        return PedidoProduto.builder()
+                .id(pedidoProdutoDto.getId())
+                .produto(Produto.of(pedidoProdutoDto.getProduto()))
+                .pedido(Pedido.of(pedidoProdutoDto.getPedido()))
+                .quantidade(pedidoProdutoDto.getQuantidade())
+                .precoUnitario(pedidoProdutoDto.getPrecoUnitario())
+                .build();
     }
 }

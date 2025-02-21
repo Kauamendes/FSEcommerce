@@ -1,9 +1,17 @@
 package br.com.fs.ecommerce.foursalesecommerce.service.impl;
 
+import br.com.fs.ecommerce.foursalesecommerce.domain.Pedido;
+import br.com.fs.ecommerce.foursalesecommerce.domain.Produto;
+import br.com.fs.ecommerce.foursalesecommerce.domain.Status;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
+import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
+import br.com.fs.ecommerce.foursalesecommerce.exception.PedidoJaPagoException;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
+import br.com.fs.ecommerce.foursalesecommerce.exception.UsuarioNaoEncontradoPorEmailException;
+import br.com.fs.ecommerce.foursalesecommerce.repository.PedidoRepository;
 import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
+import br.com.fs.ecommerce.foursalesecommerce.service.PedidoService;
 import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -11,53 +19,56 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
-public class PedidoServiceImpl implements UsuarioService {
+public class PedidoServiceImpl implements PedidoService {
 
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PedidoRepository pedidoRepository;
 
     @Override
-    public List<Usuario> listar() {
-        return usuarioRepository.findAll();
+    public List<Pedido> listar() {
+        return pedidoRepository.findAll();
     }
 
     @Override
-    public Optional<Usuario> buscarPorId(String id) {
-        return usuarioRepository.findById(id);
+    public Optional<Pedido> buscarPorId(String id) {
+        return pedidoRepository.findById(id);
     }
 
     @Override
-    public Usuario buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RegistroNaoEncontradoException(Usuario.class.getSimpleName()));
+    public Pedido salvar(PedidoDto pedidoDto) {
+        return pedidoRepository.save(Pedido.of(pedidoDto));
     }
 
     @Override
-    public Usuario salvar(UsuarioDto usuarioDto) {
-        if (usuarioRepository.findByEmail(usuarioDto.getEmail()).isPresent()) {
-            throw new AuthenticationServiceException("Já existe um usuario cadastrado com este email");
-        }
-        usuarioDto.setSenha(passwordEncoder.encode(usuarioDto.getSenha()));
-        return usuarioRepository.save(Usuario.of(usuarioDto));
-    }
-
-    @Override
-    public Usuario atualizar(UsuarioDto usuarioDto, String id) {
-       if (!usuarioRepository.existsById(id)) {
-           throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName());
+    public Pedido atualizar(PedidoDto pedidoDto, String id) {
+       if (!pedidoRepository.existsById(id)) {
+           throw new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id);
        }
-       return usuarioRepository.save(Usuario.of(usuarioDto));
+       return pedidoRepository.save(Pedido.of(pedidoDto));
     }
 
     @Override
     public void excluir(String id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName());
+        if (!pedidoRepository.existsById(id)) {
+            throw new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id);
         }
-        usuarioRepository.deleteById(id);
+        pedidoRepository.deleteById(id);
+    }
+
+    @Override
+    public Pedido pagarPedido(String id) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id));
+
+        if (Objects.equals(Status.PAGO, pedido.getStatus())) throw new PedidoJaPagoException();
+
+        pedido.setStatus(Status.PAGO);
+        return pedidoRepository.save(pedido);
     }
 }

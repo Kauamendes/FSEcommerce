@@ -1,5 +1,7 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,5 +43,15 @@ public class Pedido extends BaseEntity{
         if (isNull(id)) {
             id = UUID.randomUUID().toString();
         }
+    }
+
+    public static Pedido of(PedidoDto pedidoDto) {
+        return Pedido.builder()
+                .id(pedidoDto.getId())
+                .usuario(Usuario.of(pedidoDto.getUsuario()))
+                .status(pedidoDto.getStatus())
+                .subtotal(pedidoDto.getSubtotal())
+                .pedidoProdutos(pedidoDto.getPedidoProdutos().stream().map(PedidoProduto::of).toList())
+                .build();
     }
 }

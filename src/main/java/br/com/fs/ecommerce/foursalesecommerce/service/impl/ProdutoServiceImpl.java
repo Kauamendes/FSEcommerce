@@ -1,9 +1,13 @@
 package br.com.fs.ecommerce.foursalesecommerce.service.impl;
 
+import br.com.fs.ecommerce.foursalesecommerce.domain.Produto;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
+import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
+import br.com.fs.ecommerce.foursalesecommerce.repository.ProdutoRepository;
 import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
+import br.com.fs.ecommerce.foursalesecommerce.service.ProdutoService;
 import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -15,49 +19,38 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ProdutoServiceImpl implements UsuarioService {
+public class ProdutoServiceImpl implements ProdutoService {
 
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final ProdutoRepository produtoRepository;
 
     @Override
-    public List<Usuario> listar() {
-        return usuarioRepository.findAll();
+    public List<Produto> listar() {
+        return produtoRepository.findAll();
     }
 
     @Override
-    public Optional<Usuario> buscarPorId(String id) {
-        return usuarioRepository.findById(id);
+    public Optional<Produto> buscarPorId(String id) {
+        return produtoRepository.findById(id);
     }
 
     @Override
-    public Usuario buscarPorEmail(String email) {
-        return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RegistroNaoEncontradoException(Usuario.class.getSimpleName()));
+    public Produto salvar(ProdutoDto produtoDto) {
+        return produtoRepository.save(Produto.of(produtoDto));
     }
 
     @Override
-    public Usuario salvar(UsuarioDto usuarioDto) {
-        if (usuarioRepository.findByEmail(usuarioDto.getEmail()).isPresent()) {
-            throw new AuthenticationServiceException("Já existe um usuario cadastrado com este email");
-        }
-        usuarioDto.setSenha(passwordEncoder.encode(usuarioDto.getSenha()));
-        return usuarioRepository.save(Usuario.of(usuarioDto));
-    }
-
-    @Override
-    public Usuario atualizar(UsuarioDto usuarioDto, String id) {
-       if (!usuarioRepository.existsById(id)) {
-           throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName());
+    public Produto atualizar(ProdutoDto produtoDto, String id) {
+       if (!produtoRepository.existsById(id)) {
+           throw new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id);
        }
-       return usuarioRepository.save(Usuario.of(usuarioDto));
+       return produtoRepository.save(Produto.of(produtoDto));
     }
 
     @Override
     public void excluir(String id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName());
+        if (!produtoRepository.existsById(id)) {
+            throw new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id);
         }
-        usuarioRepository.deleteById(id);
+        produtoRepository.deleteById(id);
     }
 }
