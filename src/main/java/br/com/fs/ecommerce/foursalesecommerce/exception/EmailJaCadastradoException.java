@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
-public class PedidoJaPagoException extends RuntimeException {
+public class EmailJaCadastradoException extends RuntimeException {
 
-    public PedidoJaPagoException() {
-        super(MessageBundle.getMessage("pedidoJaPagoException"));
+    public EmailJaCadastradoException() {
+        super(MessageBundle.getMessage("emailJaCadastradoException"));
     }
 }

@@ -2,6 +2,7 @@ package br.com.fs.ecommerce.foursalesecommerce.service.impl;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
+import br.com.fs.ecommerce.foursalesecommerce.exception.EmailJaCadastradoException;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.exception.UsuarioNaoEncontradoPorEmailException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
@@ -9,7 +10,6 @@ import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario salvar(UsuarioDto usuarioDto) {
         if (usuarioRepository.findByEmail(usuarioDto.getEmail()).isPresent()) {
-            throw new AuthenticationServiceException("Já existe um usuario cadastrado com este email");
+            throw new EmailJaCadastradoException();
         }
         usuarioDto.setSenha(passwordEncoder.encode(usuarioDto.getSenha()));
         return usuarioRepository.save(Usuario.of(usuarioDto));
@@ -52,6 +52,11 @@ public class UsuarioServiceImpl implements UsuarioService {
        if (!usuarioRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
        }
+
+        if (usuarioRepository.findByEmail(usuarioDto.getEmail()).isPresent()) {
+            throw new EmailJaCadastradoException();
+        }
+
         usuarioDto.setId(id);
         usuarioDto.setSenha(passwordEncoder.encode(usuarioDto.getSenha()));
        return usuarioRepository.save(Usuario.of(usuarioDto));
