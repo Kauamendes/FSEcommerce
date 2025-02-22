@@ -24,10 +24,11 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final UsuarioService usuarioService;
+    public static final String BEARER_PREFIX = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (Objects.equals(SecurityConstants.AUTH_LOGIN, request.getRequestURI())) {
+        if (Objects.equals(SecurityConfig.AUTH_LOGIN, request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -46,7 +47,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
-        if (isNull(authHeader) || !authHeader.startsWith("Bearer ")) return null;
-        return authHeader.replace("Bearer ", "");
+        if (isNull(authHeader) || !authHeader.startsWith(BEARER_PREFIX)) return null;
+        return authHeader.replace(BEARER_PREFIX, "");
     }
 }

@@ -23,6 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
+    public static final String ROTA_PRODUTOS = "/produtos/**";
+    public static final String AUTH_LOGIN = "/auth/login";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -33,10 +35,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, SecurityConstants.AUTH_LOGIN).permitAll()
-                        .requestMatchers(HttpMethod.POST, SecurityConstants.ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
-                        .requestMatchers(HttpMethod.PUT, SecurityConstants.ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
-                        .requestMatchers(HttpMethod.DELETE, SecurityConstants.ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, AUTH_LOGIN).permitAll()
+                        .requestMatchers(HttpMethod.POST, ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, ROTA_PRODUTOS).hasAuthority(UserRole.ROLE_ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
