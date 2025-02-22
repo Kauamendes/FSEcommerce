@@ -53,18 +53,15 @@ Isso criará um container do MySQL com as seguintes configurações:
 
 ### Opção 2: Usando MySQL Workbench (Sem Docker)
 
-    Crie um banco de dados chamado fsecommerce no MySQL Workbench.
+   Crie um banco de dados chamado fsecommerce no MySQL Workbench.
 
-    Crie um usuário com as seguintes credenciais:
+   Crie um usuário com as seguintes credenciais:
 
         Usuário: seu_usuario
-
         Senha: sua_senha
 
-    Atualize o arquivo application.properties (ou application.yml) com as credenciais do banco de dados:
-    properties
-    Copy
-
+   Atualize o arquivo application.properties (ou application.yml) com as credenciais do banco de dados:
+   
     spring.datasource.url=jdbc:mysql://localhost:3306/fsecommerce
     spring.datasource.username=seu_usuario
     spring.datasource.password=sua_senha
@@ -86,16 +83,14 @@ cd nome-do-repositorio
 
 Com o banco de dados configurado, execute a aplicação Spring Boot:
 
-    Usando Maven:
+   Usando Maven:
     bash
-    Copy
-
+        
     ./mvnw spring-boot:run
 
-    Usando Gradle:
+Usando Gradle:
     bash
-    Copy
-
+    
     ./gradlew bootRun
 
 A aplicação será iniciada na porta 8080 por padrão.
@@ -103,13 +98,13 @@ Inserção de Dados Iniciais
 
 Ao rodar a aplicação pela primeira vez, os dados iniciais serão inseridos automaticamente no banco de dados. Isso inclui:
 
-    Usuários:
+   Usuários:
 
         Admin: admin@ecommerce.com (senha: senha_admin, role: ROLE_ADMIN)
 
         Cliente: cliente1@ecommerce.com (senha: senha_cliente, role: ROLE_USUARIO)
 
-    Categorias:
+   Categorias:
 
         Eletrônicos
 
@@ -117,7 +112,7 @@ Ao rodar a aplicação pela primeira vez, os dados iniciais serão inseridos aut
 
         Acessórios
 
-    Produtos:
+   Produtos:
 
         Smartphone
 
@@ -134,17 +129,19 @@ Ao rodar a aplicação pela primeira vez, os dados iniciais serão inseridos aut
 ## Acessando o Swagger UI
 
 Após rodar a aplicação, acesse a documentação interativa da API no Swagger UI:
-Copy
 
-http://localhost:8080/fsecommerce/swagger-ui/index.html
+**http://localhost:8080/fsecommerce/swagger-ui/index.html**
 
 ## Usuários e Senhas Iniciais
 
 Para testar os endpoints protegidos, utilize os seguintes dados de login:
-Usuário	Email	Senha	Role
-Admin	admin@ecommerce.com	senha_admin	ROLE_ADMIN
-Cliente	cliente1@ecommerce.com	senha_cliente	ROLE_USUARIO
-Endpoints Disponíveis
+
+| **Usuário** | **Email**               | **Senha**       | **Role**      |
+|-------------|-------------------------|-----------------|---------------|
+| Admin       | `admin@ecommerce.com`   | `senha_admin`   | `ROLE_ADMIN`  |
+| Cliente     | `cliente1@ecommerce.com`| `senha_cliente` | `ROLE_USUARIO`|
+
+## Endpoints Disponíveis
 
 ### Aqui estão alguns dos principais endpoints disponíveis na API:
 Usuários
