@@ -5,8 +5,6 @@ import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.AuthDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.LoginDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.EmailOuSenhaIncorretoException;
-import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
-import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
 import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
