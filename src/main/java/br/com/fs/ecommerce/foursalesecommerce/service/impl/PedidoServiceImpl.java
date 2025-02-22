@@ -11,6 +11,7 @@ import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoExc
 import br.com.fs.ecommerce.foursalesecommerce.repository.PedidoRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.PedidoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,8 @@ public class PedidoServiceImpl implements PedidoService {
     private final EstoqueComponent estoqueComponent;
 
     @Override
-    public List<Pedido> listar() {
-        return pedidoRepository.findAll();
+    public Page<Pedido> listar(Pageable pageable) {
+        return pedidoRepository.findAll(pageable);
     }
 
     @Override

@@ -1,17 +1,21 @@
 package br.com.fs.ecommerce.foursalesecommerce.controller;
 
+import br.com.fs.ecommerce.foursalesecommerce.domain.Categoria;
 import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaDto;
+import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.service.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/categorias")
@@ -26,10 +30,22 @@ public class CategoriaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listagem de categorias retornada com sucesso")
     })
-    public List<CategoriaDto> listar() {
-        return categoriaService.listar().stream()
+    public Page<CategoriaDto> listar(@PageableDefault Pageable pageable) {
+        return new PageImpl<>(categoriaService.listar(pageable).stream()
                 .map(CategoriaDto::of)
-                .toList();
+                .toList());
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar categoria", description = "Retorna uma categoria pelo id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Busca de categoria retornada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrado")
+    })
+    public CategoriaDto buscarPorId(@PathVariable("id") String id) {
+        Categoria categoria = categoriaService.buscarPorId(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException(Categoria.class.getSimpleName(), id));
+        return CategoriaDto.of(categoria);
     }
 
     @PostMapping

@@ -2,13 +2,14 @@ package br.com.fs.ecommerce.foursalesecommerce.service;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Categoria;
 import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface CategoriaService {
 
-    List<Categoria> listar();
+    Page<Categoria> listar(Pageable pageable);
     Optional<Categoria> buscarPorId(String id);
     Categoria salvar(CategoriaDto categoriaDto);
 

@@ -10,11 +10,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -29,16 +31,17 @@ public class UsuarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listagem de usuários retornada com sucesso")
     })
-    public List<UsuarioResumidoDto> listar() {
-        return usuarioService.listar().stream()
+    public Page<UsuarioResumidoDto> listar(@PageableDefault Pageable pageable) {
+        return new PageImpl<>(usuarioService.listar(pageable).stream()
                 .map(UsuarioResumidoDto::of)
-                .toList();
+                .toList());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Buscar usuário", description = "Retorna um usuário pelo id dele")
+    @Operation(summary = "Buscar usuário", description = "Retorna um usuário pelo id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Busca de usuário retornada com sucesso")
+            @ApiResponse(responseCode = "200", description = "Busca de usuário retornada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public UsuarioResumidoDto buscarPorId(@PathVariable("id") String id) {
         Usuario usuario = usuarioService.buscarPorId(id)

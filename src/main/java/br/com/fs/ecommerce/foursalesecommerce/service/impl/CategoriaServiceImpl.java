@@ -6,9 +6,10 @@ import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoExc
 import br.com.fs.ecommerce.foursalesecommerce.repository.CategoriaRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,8 +19,8 @@ public class CategoriaServiceImpl implements CategoriaService {
     private final CategoriaRepository categoriaRepository;
 
     @Override
-    public List<Categoria> listar() {
-        return categoriaRepository.findAll();
+    public Page<Categoria> listar(Pageable pageable) {
+        return categoriaRepository.findAll(pageable);
     }
 
     @Override

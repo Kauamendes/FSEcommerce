@@ -6,9 +6,10 @@ import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoExc
 import br.com.fs.ecommerce.foursalesecommerce.repository.ProdutoRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.ProdutoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,8 +19,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     private final ProdutoRepository produtoRepository;
 
     @Override
-    public List<Produto> listar() {
-        return produtoRepository.findAll();
+    public Page<Produto> listar(Pageable pageable) {
+        return produtoRepository.findAll(pageable);
     }
 
     @Override
