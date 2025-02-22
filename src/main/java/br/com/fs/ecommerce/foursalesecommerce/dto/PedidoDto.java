@@ -2,6 +2,8 @@ package br.com.fs.ecommerce.foursalesecommerce.dto;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Pedido;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Status;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -16,6 +18,8 @@ import java.util.List;
 public class PedidoDto {
 
     private String id;
+
+    @NotNull(message = "O usuario do pedido não pode ser nulo")
     private UsuarioDto usuario;
 
     @Builder.Default
@@ -25,6 +29,7 @@ public class PedidoDto {
     private Integer version;
 
     @Builder.Default
+    @NotEmpty(message = "Os itens do pedido não podem ser vazios")
     private List<PedidoProdutoDto> pedidoProdutos = new ArrayList<>();
 
     public static PedidoDto of(Pedido pedido) {

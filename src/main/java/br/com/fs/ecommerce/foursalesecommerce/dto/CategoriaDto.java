@@ -1,6 +1,7 @@
 package br.com.fs.ecommerce.foursalesecommerce.dto;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Categoria;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.io.Serializable;
@@ -13,6 +14,8 @@ import java.io.Serializable;
 public class CategoriaDto implements Serializable {
 
     private String id;
+
+    @NotBlank(message = "O nome da categoria não pode ser vazio")
     private String nome;
     private String descricao;
     private Integer version;
