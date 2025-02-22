@@ -60,3 +60,21 @@ CREATE TABLE pedido_produto (
                                 FOREIGN KEY (pedido_id) REFERENCES pedido(id) ON DELETE CASCADE,
                                 FOREIGN KEY (produto_id) REFERENCES produto(id) ON DELETE CASCADE
 );
+
+CREATE INDEX idx_usuario_email ON usuario (email);
+CREATE INDEX idx_usuario_id ON usuario (id);
+
+CREATE INDEX idx_pedido_usuario_id ON pedido (usuario_id);
+CREATE INDEX idx_pedido_status ON pedido (status);
+CREATE INDEX idx_pedido_criado_em ON pedido (criado_em);
+CREATE INDEX idx_pedido_usuario_criado_em ON pedido (usuario_id, criado_em);
+CREATE INDEX idx_pedido_usuario_id_subtotal ON pedido (usuario_id, subtotal);
+CREATE INDEX idx_pedido_criado_em_subtotal ON pedido (criado_em, subtotal);
+
+CREATE INDEX idx_produto_categoria_id ON produto (categoria_id);
+CREATE INDEX idx_produto_nome ON produto (nome);
+
+CREATE INDEX idx_categoria_nome ON categoria (nome);
+
+CREATE INDEX idx_pedido_produto_pedido_id ON pedido_produto (pedido_id);
+CREATE INDEX idx_pedido_produto_produto_id ON pedido_produto (produto_id);

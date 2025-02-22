@@ -1,6 +1,7 @@
 package br.com.fs.ecommerce.foursalesecommerce.config.security;
 
-import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
+import br.com.fs.ecommerce.foursalesecommerce.exception.UsuarioNaoEncontradoPorEmailException;
+import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ import static java.util.Objects.nonNull;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
-    private final UsuarioService usuarioService;
+    private final UsuarioRepository usuarioRepository;
     public static final String BEARER_PREFIX = "Bearer ";
 
     @Override
@@ -37,7 +38,9 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (nonNull(token)) {
             var email = tokenService.validateToken(token);
             if (nonNull(email)) {
-                UserDetails usuario = usuarioService.buscarPorEmail(email);
+                UserDetails usuario = usuarioRepository.findByEmail(email)
+                        .orElseThrow(() -> new UsuarioNaoEncontradoPorEmailException(email));
+
                 var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
