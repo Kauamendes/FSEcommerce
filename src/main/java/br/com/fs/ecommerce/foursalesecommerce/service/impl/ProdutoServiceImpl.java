@@ -33,7 +33,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public Produto atualizar(ProdutoDto produtoDto, String id) {
+    public Produto atualizar(String id, ProdutoDto produtoDto) {
        if (!produtoRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id);
        }

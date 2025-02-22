@@ -50,7 +50,7 @@ public class ProdutoController {
     })
     public ProdutoDto atualizar(@RequestBody ProdutoDto produtoDto,
                                 @PathVariable("id") String id) {
-        return ProdutoDto.of(produtoService.atualizar(produtoDto, id));
+        return ProdutoDto.of(produtoService.atualizar(id, produtoDto));
     }
 
     @DeleteMapping("/{id}")

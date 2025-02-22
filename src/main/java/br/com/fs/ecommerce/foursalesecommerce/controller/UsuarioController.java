@@ -1,7 +1,9 @@
 package br.com.fs.ecommerce.foursalesecommerce.controller;
 
+import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioResumidoDto;
+import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,6 +35,17 @@ public class UsuarioController {
                 .toList();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar usuário", description = "Retorna um usuário pelo id dele")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Busca de usuário retornada com sucesso")
+    })
+    public UsuarioResumidoDto buscarPorId(@PathVariable("id") String id) {
+        Usuario usuario = usuarioService.buscarPorId(id)
+                .orElseThrow(() -> new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id));
+        return UsuarioResumidoDto.of(usuario);
+    }
+
     @PostMapping
     @Operation(summary = "Criar usuário", description = "Cria um novo usuário com os dados fornecidos")
     @ApiResponses(value = {
@@ -51,7 +64,7 @@ public class UsuarioController {
     })
     public UsuarioResumidoDto atualizar(@RequestBody UsuarioDto usuarioDto,
                                         @PathVariable("id") String id) {
-        return UsuarioResumidoDto.of(usuarioService.atualizar(usuarioDto, id));
+        return UsuarioResumidoDto.of(usuarioService.atualizar(id, usuarioDto));
     }
 
     @DeleteMapping("/{id}")

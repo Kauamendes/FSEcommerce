@@ -50,7 +50,7 @@ public class CategoriaController {
     })
     public CategoriaDto atualizar(@RequestBody CategoriaDto categoriaDto,
                                   @PathVariable("id") String id) {
-        return CategoriaDto.of(categoriaService.atualizar(categoriaDto, id));
+        return CategoriaDto.of(categoriaService.atualizar(id, categoriaDto));
     }
 
     @DeleteMapping("/{id}")

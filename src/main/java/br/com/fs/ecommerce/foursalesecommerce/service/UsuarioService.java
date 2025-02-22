@@ -12,6 +12,7 @@ public interface UsuarioService {
     Optional<Usuario> buscarPorId(String id);
     Usuario buscarPorEmail(String email);
     Usuario salvar(UsuarioDto usuarioDto);
-    Usuario atualizar(UsuarioDto usuarioDto, String id);
+
+    Usuario atualizar(String id, UsuarioDto usuarioDto);
     void excluir(String id);
 }

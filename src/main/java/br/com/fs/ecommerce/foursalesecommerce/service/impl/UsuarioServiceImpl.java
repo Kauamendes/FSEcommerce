@@ -47,7 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario atualizar(UsuarioDto usuarioDto, String id) {
+    public Usuario atualizar(String id, UsuarioDto usuarioDto) {
        if (!usuarioRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
        }

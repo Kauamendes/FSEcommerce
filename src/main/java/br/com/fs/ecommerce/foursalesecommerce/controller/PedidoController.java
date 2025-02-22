@@ -117,7 +117,7 @@ public class PedidoController {
     })
     public PedidoDto atualizar(@RequestBody PedidoDto pedidoDto,
                                @PathVariable("id") String id) {
-        return PedidoDto.of(pedidoService.atualizar(pedidoDto, id));
+        return PedidoDto.of(pedidoService.atualizar(id, pedidoDto));
     }
 
     @DeleteMapping("/{id}")

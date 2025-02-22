@@ -15,7 +15,8 @@ public interface PedidoService {
     List<Pedido> listar();
     Optional<Pedido> buscarPorId(String id);
     Pedido salvar(PedidoDto pedidoDto);
-    Pedido atualizar(PedidoDto pedidoDto, String id);
+
+    Pedido atualizar(String id, PedidoDto pedidoDto);
     void excluir(String id);
     Pedido pagarPedido(String id);
 

@@ -44,7 +44,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Pedido atualizar(PedidoDto pedidoDto, String id) {
+    public Pedido atualizar(String id, PedidoDto pedidoDto) {
        if (!pedidoRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id);
        }

@@ -33,7 +33,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public Categoria atualizar(CategoriaDto categoriaDto, String id) {
+    public Categoria atualizar(String id, CategoriaDto categoriaDto) {
        if (!categoriaRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Categoria.class.getSimpleName(), id);
        }
