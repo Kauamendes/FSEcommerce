@@ -53,7 +53,7 @@ public class Produto extends BaseEntity {
 
     public static Produto of(ProdutoDto produtoDto) {
         if (isNull(produtoDto)) return null;
-        Produto produto = Produto.builder()
+        return Produto.builder()
                 .id(produtoDto.getId())
                 .nome(produtoDto.getNome())
                 .descricao(produtoDto.getDescricao())
@@ -62,7 +62,5 @@ public class Produto extends BaseEntity {
                 .quantidade(produtoDto.getQuantidade())
                 .quantidadeReservada(produtoDto.getQuantidadeReservada())
                 .build();
-        produto.setVersion(produtoDto.getVersion());
-        return produto;
     }
 }

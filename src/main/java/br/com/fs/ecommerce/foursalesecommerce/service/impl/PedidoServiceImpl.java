@@ -10,6 +10,7 @@ import br.com.fs.ecommerce.foursalesecommerce.exception.PedidoJaPagoException;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.PedidoRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.PedidoService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +39,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    @Transactional
     public Pedido salvar(PedidoDto pedidoDto) {
         estoqueComponent.reservarEstoque(pedidoDto.getPedidoProdutos());
         pedidoDto.calcularSubtotal();
@@ -45,6 +47,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    @Transactional
     public Pedido atualizar(String id, PedidoDto pedidoDto) {
        if (!pedidoRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id);
@@ -64,6 +67,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    @Transactional
     public Pedido pagarPedido(String id) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id));
@@ -71,7 +75,8 @@ public class PedidoServiceImpl implements PedidoService {
         if (Objects.equals(Status.PAGO, pedido.getStatus()))
             throw new PedidoJaPagoException();
 
-        pedidoRepository.updateStatusById(pedido.getId(), Status.PAGO);
+        pedido.setStatus(Status.PAGO);
+        pedidoRepository.updateStatusById(pedido.getId(), pedido.getStatus());
         estoqueComponent.atualizarQuantidadeProdutoAposPagamento(pedido.getPedidoProdutos());
         return pedido;
     }

@@ -54,14 +54,12 @@ public class Usuario extends BaseEntity implements UserDetails {
     }
 
     public static Usuario of(UsuarioDto usuarioDto) {
-        Usuario usuario = Usuario.builder()
+        return Usuario.builder()
                 .id(usuarioDto.getId())
                 .nome(usuarioDto.getNome())
                 .email(usuarioDto.getEmail())
                 .senha(usuarioDto.getSenha())
                 .role(usuarioDto.getRole())
                 .build();
-        usuario.setVersion(usuarioDto.getVersion());
-        return usuario;
     }
 }

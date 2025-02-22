@@ -54,7 +54,6 @@ public class Pedido extends BaseEntity{
                 .pedidoProdutos(pedidoDto.getPedidoProdutos().stream().map(PedidoProduto::of).toList())
                 .build();
         pedido.getPedidoProdutos().forEach(p -> p.setPedido(pedido));
-        pedido.setVersion(pedidoDto.getVersion());
         return pedido;
     }
 }

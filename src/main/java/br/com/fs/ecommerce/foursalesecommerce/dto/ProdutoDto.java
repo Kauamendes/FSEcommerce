@@ -28,7 +28,6 @@ public class ProdutoDto {
 
     private Integer quantidade;
     private Integer quantidadeReservada;
-    private Integer version;
 
     public static ProdutoDto of(Produto produto) {
         return ProdutoDto.builder()
@@ -39,7 +38,6 @@ public class ProdutoDto {
                 .descricao(produto.getDescricao())
                 .quantidade(produto.getQuantidade())
                 .quantidadeReservada(produto.getQuantidadeReservada())
-                .version(produto.getVersion())
                 .build();
     }
 }

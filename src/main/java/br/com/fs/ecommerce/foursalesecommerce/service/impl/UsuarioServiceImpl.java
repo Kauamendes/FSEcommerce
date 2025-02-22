@@ -13,7 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +56,8 @@ public class UsuarioServiceImpl implements UsuarioService {
            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
        }
 
-        if (usuarioRepository.findByEmail(usuarioDto.getEmail()).isPresent()) {
+        Usuario usuarioComMesmoEmail = usuarioRepository.findByEmail(usuarioDto.getEmail()).orElse(null);
+        if (nonNull(usuarioComMesmoEmail) && !Objects.equals(id, usuarioComMesmoEmail.getId())) {
             throw new EmailJaCadastradoException();
         }
 

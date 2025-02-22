@@ -26,7 +26,6 @@ public class PedidoDto {
     private Status status = Status.PENDENTE;
 
     private BigDecimal subtotal;
-    private Integer version;
 
     @Builder.Default
     @NotEmpty(message = "Os itens do pedido não podem ser vazios")
@@ -38,7 +37,6 @@ public class PedidoDto {
                 .usuario(UsuarioDto.of(pedido.getUsuario()))
                 .status(pedido.getStatus())
                 .subtotal(pedido.getSubtotal())
-                .version(pedido.getVersion())
                 .build();
     }
 

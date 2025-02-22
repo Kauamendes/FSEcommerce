@@ -7,8 +7,7 @@ CREATE TABLE usuario (
                          criado_por   VARCHAR(255)                                                    NOT NULL,
                          criado_em    TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
                          alterado_por VARCHAR(255)                                                    NOT NULL,
-                         alterado_em  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-                         version      INT       DEFAULT 0                                             NOT NULL
+                         alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE categoria (
@@ -18,8 +17,7 @@ CREATE TABLE categoria (
                            criado_por   VARCHAR(255)                                                    NOT NULL,
                            criado_em    TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
                            alterado_por VARCHAR(255)                                                    NOT NULL,
-                           alterado_em  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-                           version      INT       DEFAULT 0                                             NOT NULL
+                           alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE produto (
@@ -34,7 +32,6 @@ CREATE TABLE produto (
                          criado_em            TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
                          alterado_por         VARCHAR(255)                                                    NOT NULL,
                          alterado_em          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-                         version              INT       DEFAULT 0                                             NOT NULL,
                          FOREIGN KEY (categoria_id) REFERENCES categoria(id) ON DELETE CASCADE
 );
 
@@ -47,7 +44,6 @@ CREATE TABLE pedido (
                         criado_em    TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
                         alterado_por VARCHAR(255)                                                    NOT NULL,
                         alterado_em  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-                        version      INT       DEFAULT 0                                             NOT NULL,
                         FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
 );
 

@@ -34,12 +34,10 @@ public class Categoria extends BaseEntity {
 
     public static Categoria of(CategoriaDto categoriaDto) {
         if (isNull(categoriaDto)) return null;
-        Categoria categoria = Categoria.builder()
+        return Categoria.builder()
                 .id(categoriaDto.getId())
                 .nome(categoriaDto.getNome())
                 .descricao(categoriaDto.getDescricao())
                 .build();
-        categoria.setVersion(categoriaDto.getVersion());
-        return categoria;
     }
 }

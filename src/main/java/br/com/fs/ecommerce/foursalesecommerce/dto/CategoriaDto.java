@@ -18,14 +18,12 @@ public class CategoriaDto implements Serializable {
     @NotBlank(message = "O nome da categoria não pode ser vazio")
     private String nome;
     private String descricao;
-    private Integer version;
 
     public static CategoriaDto of(Categoria categoria) {
         return CategoriaDto.builder()
                 .id(categoria.getId())
                 .nome(categoria.getNome())
                 .descricao(categoria.getDescricao())
-                .version(categoria.getVersion())
                 .build();
     }
 }

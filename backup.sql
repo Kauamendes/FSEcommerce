@@ -46,7 +46,6 @@ CREATE TABLE ` categoria `
     255
 ) NOT NULL,
     ` alterado_em ` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    ` version ` int NOT NULL DEFAULT '0',
     PRIMARY KEY
 (
     `
@@ -69,7 +68,7 @@ CREATE TABLE ` categoria `
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
 INSERT INTO ` categoria `
-VALUES ('336402fa-f150-11ef-bf2d-0242ac120002', 'Eletrônicos', 'Aparelhos e acessórios eletrônicos', 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0), ('33640465-f150-11ef-bf2d-0242ac120002', 'Computadores', 'Desktops, notebooks e componentes', 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0), ('336404e6-f150-11ef-bf2d-0242ac120002', 'Acessórios', 'Acessórios para eletrônicos, celulares e computadores', 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0);
+VALUES ('4ee56c20-f158-11ef-804f-0242ac120002', 'Eletrônicos', 'Aparelhos e acessórios eletrônicos', 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05'), ('4ee56d9e-f158-11ef-804f-0242ac120002', 'Computadores', 'Desktops, notebooks e componentes', 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05'), ('4ee56e17-f158-11ef-804f-0242ac120002', 'Acessórios', 'Acessórios para eletrônicos, celulares e computadores', 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +139,7 @@ CREATE TABLE ` flyway_schema_history `
 LOCK TABLES `flyway_schema_history` WRITE;
 /*!40000 ALTER TABLE `flyway_schema_history` DISABLE KEYS */;
 INSERT INTO ` flyway_schema_history `
-VALUES (1, '1.0.0', 'estrutura inicial', 'SQL', 'V1_0_0__estrutura_inicial.sql', -1420585090, 'root', '2025-02-22 19:07:03', 477, 1), (2, '1.0.1', 'dados iniciais', 'SQL', 'V1_0_1__dados_iniciais.sql', -1059661785, 'root', '2025-02-22 19:07:03', 5, 1);
+VALUES (1, '1.0.0', 'estrutura inicial', 'SQL', 'V1_0_0__estrutura_inicial.sql', -2143138205, 'root', '2025-02-22 20:05:05', 552, 1), (2, '1.0.1', 'dados iniciais', 'SQL', 'V1_0_1__dados_iniciais.sql', -1059661785, 'root', '2025-02-22 20:05:05', 5, 1);
 /*!40000 ALTER TABLE `flyway_schema_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +182,6 @@ CREATE TABLE ` pedido `
     255
 ) NOT NULL,
     ` alterado_em ` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    ` version ` int NOT NULL DEFAULT '0',
     PRIMARY KEY
 (
     `
@@ -384,7 +382,6 @@ CREATE TABLE ` produto `
     255
 ) NOT NULL,
     ` alterado_em ` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    ` version ` int NOT NULL DEFAULT '0',
     PRIMARY KEY
 (
     `
@@ -425,7 +422,7 @@ CREATE TABLE ` produto `
 LOCK TABLES `produto` WRITE;
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
 INSERT INTO ` produto `
-VALUES ('3364302c-f150-11ef-bf2d-0242ac120002', 'Smartphone', 'Celular top de linha', 3999.99, '336402fa-f150-11ef-bf2d-0242ac120002', 10, 0, 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0), ('33643452-f150-11ef-bf2d-0242ac120002', 'Notebook Gamer', 'Notebook com placa de vídeo dedicada', 5999.99, '33640465-f150-11ef-bf2d-0242ac120002', 5, 0, 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0), ('33643696-f150-11ef-bf2d-0242ac120002', 'Mouse Óptico', 'Mouse com fio para jogos', 129.90, '336404e6-f150-11ef-bf2d-0242ac120002', 30, 0, 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0), ('33643887-f150-11ef-bf2d-0242ac120002', 'Teclado Mecânico', 'Teclado mecânico RGB', 349.90, '336404e6-f150-11ef-bf2d-0242ac120002', 25, 0, 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0), ('33643a64-f150-11ef-bf2d-0242ac120002', 'Fone de Ouvido Bluetooth', 'Fone de ouvido sem fio com cancelamento de ruído', 799.90, '336404e6-f150-11ef-bf2d-0242ac120002', 15, 0, 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0), ('33643c3a-f150-11ef-bf2d-0242ac120002', 'Monitor 4K', 'Monitor ultra HD para jogos e edição de vídeo', 2299.99, '33640465-f150-11ef-bf2d-0242ac120002', 10, 0, 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0);
+VALUES ('4ee59847-f158-11ef-804f-0242ac120002', 'Smartphone', 'Celular top de linha', 3999.99, '4ee56c20-f158-11ef-804f-0242ac120002', 10, 0, 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05'), ('4ee59c39-f158-11ef-804f-0242ac120002', 'Notebook Gamer', 'Notebook com placa de vídeo dedicada', 5999.99, '4ee56d9e-f158-11ef-804f-0242ac120002', 5, 0, 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05'), ('4ee59e72-f158-11ef-804f-0242ac120002', 'Mouse Óptico', 'Mouse com fio para jogos', 129.90, '4ee56e17-f158-11ef-804f-0242ac120002', 30, 0, 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05'), ('4ee5a0b9-f158-11ef-804f-0242ac120002', 'Teclado Mecânico', 'Teclado mecânico RGB', 349.90, '4ee56e17-f158-11ef-804f-0242ac120002', 25, 0, 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05'), ('4ee5a2ac-f158-11ef-804f-0242ac120002', 'Fone de Ouvido Bluetooth', 'Fone de ouvido sem fio com cancelamento de ruído', 799.90, '4ee56e17-f158-11ef-804f-0242ac120002', 15, 0, 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05'), ('4ee5a4df-f158-11ef-804f-0242ac120002', 'Monitor 4K', 'Monitor ultra HD para jogos e edição de vídeo', 2299.99, '4ee56d9e-f158-11ef-804f-0242ac120002', 10, 0, 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05');
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -471,7 +468,6 @@ CREATE TABLE ` usuario `
     255
 ) NOT NULL,
     ` alterado_em ` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    ` version ` int NOT NULL DEFAULT '0',
     PRIMARY KEY
 (
     `
@@ -506,7 +502,7 @@ CREATE TABLE ` usuario `
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO ` usuario `
-VALUES ('3363e611-f150-11ef-bf2d-0242ac120002', 'Admin', 'admin@ecommerce.com', '$2a$12$oeMCFj6aLz8cVXf6R1nWQeM4E8LTdoFvbj6NooZS18W.dMppHLQRq', 'ROLE_ADMIN', 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0), ('3363e8ac-f150-11ef-bf2d-0242ac120002', 'Cliente 1', 'cliente1@ecommerce.com', '$2a$10$VQi2iMA9sZ1NJ6ywbUZj3eFXEEQijz1fBJC2YwR4BdOv4LlD.z3Ua', 'ROLE_USUARIO', 'SISTEMA', '2025-02-22 19:07:03', 'SISTEMA', '2025-02-22 19:07:03', 0);
+VALUES ('4ee54be3-f158-11ef-804f-0242ac120002', 'Admin', 'admin@ecommerce.com', '$2a$12$oeMCFj6aLz8cVXf6R1nWQeM4E8LTdoFvbj6NooZS18W.dMppHLQRq', 'ROLE_ADMIN', 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05'), ('4ee54ede-f158-11ef-804f-0242ac120002', 'Cliente 1', 'cliente1@ecommerce.com', '$2a$10$VQi2iMA9sZ1NJ6ywbUZj3eFXEEQijz1fBJC2YwR4BdOv4LlD.z3Ua', 'ROLE_USUARIO', 'SISTEMA', '2025-02-22 20:05:05', 'SISTEMA', '2025-02-22 20:05:05');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -519,4 +515,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-22 16:32:43
+-- Dump completed on 2025-02-22 17:05:29
