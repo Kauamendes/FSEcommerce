@@ -1,6 +1,7 @@
 package br.com.fs.ecommerce.foursalesecommerce.exception;
 
 import br.com.fs.ecommerce.foursalesecommerce.support.MessageBundle;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -71,5 +72,18 @@ public class CustomExceptionHandler {
                 errors
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Erro ao salvar entidade: uma entidade associada não foi salva. Verifique as dependências.",
+                ex.getMessage(),
+                request.getDescription(false),
+                Collections.emptyList()
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
