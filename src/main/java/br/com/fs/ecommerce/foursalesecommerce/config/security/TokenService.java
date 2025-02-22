@@ -22,18 +22,17 @@ public class TokenService {
     public String generateToken(Usuario usuario) throws AuthException {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-
             return JWT.create()
                     .withIssuer("fsecommerceApiJwt")
                     .withSubject(usuario.getEmail())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
-        } catch (JWTCreationException exception){
+        } catch (JWTCreationException exception) {
             throw new AuthException("Erro ao gerar token JWT");
         }
     }
 
-    public String validateToken(String token){
+    public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
@@ -46,7 +45,7 @@ public class TokenService {
         }
     }
 
-    private Instant generateExpirationDate(){
+    private Instant generateExpirationDate() {
         return LocalDateTime.now().plusHours(8).toInstant(ZoneOffset.of("-03:00"));
     }
 }
