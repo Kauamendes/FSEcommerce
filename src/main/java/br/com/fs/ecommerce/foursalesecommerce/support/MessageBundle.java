@@ -1,6 +1,5 @@
 package br.com.fs.ecommerce.foursalesecommerce.support;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -9,7 +8,6 @@ import java.util.Locale;
 
 @Slf4j
 @NoArgsConstructor
-@AllArgsConstructor
 public class MessageBundle {
 
     public static String getMessage(String key, Object... argumentos) {
