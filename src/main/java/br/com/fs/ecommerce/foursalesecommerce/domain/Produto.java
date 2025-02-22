@@ -36,6 +36,9 @@ public class Produto extends BaseEntity {
 
     private Integer quantidade;
 
+    @Column(name = "quantidade_reservada")
+    private Integer quantidadeReservada;
+
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     @JsonIgnore
@@ -49,10 +52,17 @@ public class Produto extends BaseEntity {
     }
 
     public static Produto of(ProdutoDto produtoDto) {
-        return Produto.builder()
+        if (isNull(produtoDto)) return null;
+        Produto produto = Produto.builder()
                 .id(produtoDto.getId())
                 .nome(produtoDto.getNome())
                 .descricao(produtoDto.getDescricao())
+                .preco(produtoDto.getPreco())
+                .categoria(Categoria.of(produtoDto.getCategoria()))
+                .quantidade(produtoDto.getQuantidade())
+                .quantidadeReservada(produtoDto.getQuantidadeReservada())
                 .build();
+        produto.setVersion(produtoDto.getVersion());
+        return produto;
     }
 }

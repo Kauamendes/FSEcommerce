@@ -1,7 +1,6 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
 import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaDto;
-import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
@@ -34,10 +33,13 @@ public class Categoria extends BaseEntity {
     }
 
     public static Categoria of(CategoriaDto categoriaDto) {
-        return Categoria.builder()
+        if (isNull(categoriaDto)) return null;
+        Categoria categoria = Categoria.builder()
                 .id(categoriaDto.getId())
                 .nome(categoriaDto.getNome())
                 .descricao(categoriaDto.getDescricao())
                 .build();
+        categoria.setVersion(categoriaDto.getVersion());
+        return categoria;
     }
 }

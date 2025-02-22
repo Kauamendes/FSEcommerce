@@ -1,17 +1,11 @@
 package br.com.fs.ecommerce.foursalesecommerce.service.impl;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Produto;
-import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
-import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.ProdutoRepository;
-import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.ProdutoService;
-import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +37,7 @@ public class ProdutoServiceImpl implements ProdutoService {
        if (!produtoRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id);
        }
+        produtoDto.setId(id);
        return produtoRepository.save(Produto.of(produtoDto));
     }
 

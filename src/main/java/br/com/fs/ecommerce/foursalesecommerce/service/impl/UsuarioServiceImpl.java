@@ -3,6 +3,7 @@ package br.com.fs.ecommerce.foursalesecommerce.service.impl;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
+import br.com.fs.ecommerce.foursalesecommerce.exception.UsuarioNaoEncontradoPorEmailException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario buscarPorEmail(String email) {
         return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new RegistroNaoEncontradoException(Usuario.class.getSimpleName()));
+                .orElseThrow(() -> new UsuarioNaoEncontradoPorEmailException(email));
     }
 
     @Override
@@ -48,15 +49,17 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario atualizar(UsuarioDto usuarioDto, String id) {
        if (!usuarioRepository.existsById(id)) {
-           throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName());
+           throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
        }
+        usuarioDto.setId(id);
+        usuarioDto.setSenha(passwordEncoder.encode(usuarioDto.getSenha()));
        return usuarioRepository.save(Usuario.of(usuarioDto));
     }
 
     @Override
     public void excluir(String id) {
         if (!usuarioRepository.existsById(id)) {
-            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName());
+            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
         }
         usuarioRepository.deleteById(id);
     }

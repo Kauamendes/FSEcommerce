@@ -2,7 +2,6 @@ package br.com.fs.ecommerce.foursalesecommerce.dto;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.UserRole;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -24,14 +23,15 @@ public class UsuarioDto implements Serializable {
     private String email;
 
     private String senha;
-
     private UserRole role;
+    private Integer version;
 
     public static UsuarioDto of(Usuario usuario) {
         return UsuarioDto.builder()
                 .id(usuario.getId())
                 .nome(usuario.getNome())
                 .email(usuario.getEmail())
+                .version(usuario.getVersion())
                 .build();
     }
 }

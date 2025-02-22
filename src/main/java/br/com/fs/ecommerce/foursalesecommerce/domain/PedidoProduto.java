@@ -43,6 +43,7 @@ public class PedidoProduto {
     }
 
     public static PedidoProduto of(PedidoProdutoDto pedidoProdutoDto) {
+        if (isNull(pedidoProdutoDto)) return null;
         return PedidoProduto.builder()
                 .id(pedidoProdutoDto.getId())
                 .produto(Produto.of(pedidoProdutoDto.getProduto()))
