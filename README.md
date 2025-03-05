@@ -172,7 +172,7 @@ A estrutura do projeto está organizada da seguinte forma:
 
         application.properties: Configurações da aplicação.
 
-        schema.sql: Scripts SQL para inicialização do banco de dados.
+        db/migrations: Scripts SQL para inicialização do banco de dados.
 
     docker-compose.yml: Configuração do MySQL com Docker.
 
