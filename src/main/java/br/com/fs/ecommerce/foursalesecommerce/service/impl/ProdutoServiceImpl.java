@@ -2,6 +2,7 @@ package br.com.fs.ecommerce.foursalesecommerce.service.impl;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Produto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoUpdateDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.ProdutoRepository;
 import br.com.fs.ecommerce.foursalesecommerce.service.ProdutoService;
@@ -34,12 +35,12 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public Produto atualizar(String id, ProdutoDto produtoDto) {
+    public Produto atualizar(String id, ProdutoUpdateDto produtoDto) {
        if (!produtoRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id);
        }
-        produtoDto.setId(id);
-       return produtoRepository.save(Produto.of(produtoDto));
+
+        return produtoRepository.save(Produto.of(id, produtoDto));
     }
 
     @Override

@@ -2,6 +2,7 @@ package br.com.fs.ecommerce.foursalesecommerce.service;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioUpdateDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,6 +14,7 @@ public interface UsuarioService {
     Optional<Usuario> buscarPorId(String id);
     Usuario buscarPorEmail(String email);
     Usuario salvar(UsuarioDto usuarioDto);
-    Usuario atualizar(String id, UsuarioDto usuarioDto);
+
+    Usuario atualizar(String id, UsuarioUpdateDto usuarioDto);
     void excluir(String id);
 }

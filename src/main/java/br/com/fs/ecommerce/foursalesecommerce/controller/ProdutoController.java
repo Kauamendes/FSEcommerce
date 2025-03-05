@@ -2,6 +2,7 @@ package br.com.fs.ecommerce.foursalesecommerce.controller;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Produto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoUpdateDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.service.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,7 +65,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "200", description = "Produto atualizado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    public ProdutoDto atualizar(@RequestBody ProdutoDto produtoDto,
+    public ProdutoDto atualizar(@RequestBody @Validated ProdutoUpdateDto produtoDto,
                                 @PathVariable("id") String id) {
         return ProdutoDto.of(produtoService.atualizar(id, produtoDto));
     }

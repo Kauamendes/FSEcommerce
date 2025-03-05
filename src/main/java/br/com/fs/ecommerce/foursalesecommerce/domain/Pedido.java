@@ -1,6 +1,7 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -48,6 +49,19 @@ public class Pedido extends BaseEntity{
         if (isNull(pedidoDto)) return null;
         Pedido pedido = Pedido.builder()
                 .id(pedidoDto.getId())
+                .usuario(Usuario.of(pedidoDto.getUsuario()))
+                .status(pedidoDto.getStatus())
+                .subtotal(pedidoDto.getSubtotal())
+                .pedidoProdutos(pedidoDto.getPedidoProdutos().stream().map(PedidoProduto::of).toList())
+                .build();
+        pedido.getPedidoProdutos().forEach(p -> p.setPedido(pedido));
+        return pedido;
+    }
+
+    public static Pedido of(String id, PedidoUpdateDto pedidoDto) {
+        if (isNull(pedidoDto)) return null;
+        Pedido pedido = Pedido.builder()
+                .id(id)
                 .usuario(Usuario.of(pedidoDto.getUsuario()))
                 .status(pedidoDto.getStatus())
                 .subtotal(pedidoDto.getSubtotal())

@@ -2,6 +2,7 @@ package br.com.fs.ecommerce.foursalesecommerce.controller;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Pedido;
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoUpdateDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.TicketMedioDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.TopCompradorDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
@@ -131,7 +132,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "200", description = "Pedido atualizado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
     })
-    public PedidoDto atualizar(@RequestBody PedidoDto pedidoDto,
+    public PedidoDto atualizar(@RequestBody @Validated PedidoUpdateDto pedidoDto,
                                @PathVariable("id") String id) {
         return PedidoDto.of(pedidoService.atualizar(id, pedidoDto));
     }

@@ -1,6 +1,7 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoUpdateDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -55,6 +56,19 @@ public class Produto extends BaseEntity {
         if (isNull(produtoDto)) return null;
         return Produto.builder()
                 .id(produtoDto.getId())
+                .nome(produtoDto.getNome())
+                .descricao(produtoDto.getDescricao())
+                .preco(produtoDto.getPreco())
+                .categoria(Categoria.of(produtoDto.getCategoria()))
+                .quantidade(produtoDto.getQuantidade())
+                .quantidadeReservada(produtoDto.getQuantidadeReservada())
+                .build();
+    }
+
+    public static Produto of(String id, ProdutoUpdateDto produtoDto) {
+        if (isNull(produtoDto)) return null;
+        return Produto.builder()
+                .id(id)
                 .nome(produtoDto.getNome())
                 .descricao(produtoDto.getDescricao())
                 .preco(produtoDto.getPreco())

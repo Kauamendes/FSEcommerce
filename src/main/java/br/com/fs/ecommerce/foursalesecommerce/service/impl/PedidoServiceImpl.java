@@ -4,6 +4,7 @@ import br.com.fs.ecommerce.foursalesecommerce.components.EstoqueComponent;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Pedido;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Status;
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoUpdateDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.TicketMedioDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.TopCompradorDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.PedidoJaPagoException;
@@ -48,14 +49,14 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public Pedido atualizar(String id, PedidoDto pedidoDto) {
+    public Pedido atualizar(String id, PedidoUpdateDto pedidoDto) {
        if (!pedidoRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id);
        }
         estoqueComponent.reservarEstoque(pedidoDto.getPedidoProdutos());
-        pedidoDto.setId(id);
+
         pedidoDto.calcularSubtotal();
-       return pedidoRepository.save(Pedido.of(pedidoDto));
+        return pedidoRepository.save(Pedido.of(id, pedidoDto));
     }
 
     @Override

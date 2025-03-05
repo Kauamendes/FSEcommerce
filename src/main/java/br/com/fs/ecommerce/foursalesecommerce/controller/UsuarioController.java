@@ -3,6 +3,7 @@ package br.com.fs.ecommerce.foursalesecommerce.controller;
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioResumidoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioUpdateDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,7 +66,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    public UsuarioResumidoDto atualizar(@RequestBody UsuarioDto usuarioDto,
+    public UsuarioResumidoDto atualizar(@RequestBody @Validated UsuarioUpdateDto usuarioDto,
                                         @PathVariable("id") String id) {
         return UsuarioResumidoDto.of(usuarioService.atualizar(id, usuarioDto));
     }

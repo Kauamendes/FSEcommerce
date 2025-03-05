@@ -2,6 +2,7 @@ package br.com.fs.ecommerce.foursalesecommerce.controller;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Categoria;
 import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaUpdateDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.service.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,7 +65,7 @@ public class CategoriaController {
             @ApiResponse(responseCode = "200", description = "Categoria atualizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
-    public CategoriaDto atualizar(@RequestBody CategoriaDto categoriaDto,
+    public CategoriaDto atualizar(@RequestBody @Validated CategoriaUpdateDto categoriaDto,
                                   @PathVariable("id") String id) {
         return CategoriaDto.of(categoriaService.atualizar(id, categoriaDto));
     }

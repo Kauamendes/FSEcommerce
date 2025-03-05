@@ -1,6 +1,7 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -56,6 +57,16 @@ public class Usuario extends BaseEntity implements UserDetails {
     public static Usuario of(UsuarioDto usuarioDto) {
         return Usuario.builder()
                 .id(usuarioDto.getId())
+                .nome(usuarioDto.getNome())
+                .email(usuarioDto.getEmail())
+                .senha(usuarioDto.getSenha())
+                .role(usuarioDto.getRole())
+                .build();
+    }
+
+    public static Usuario of(String id, UsuarioUpdateDto usuarioDto) {
+        return Usuario.builder()
+                .id(id)
                 .nome(usuarioDto.getNome())
                 .email(usuarioDto.getEmail())
                 .senha(usuarioDto.getSenha())

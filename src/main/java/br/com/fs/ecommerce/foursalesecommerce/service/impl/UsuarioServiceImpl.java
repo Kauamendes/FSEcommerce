@@ -2,6 +2,7 @@ package br.com.fs.ecommerce.foursalesecommerce.service.impl;
 
 import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioUpdateDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.EmailJaCadastradoException;
 import br.com.fs.ecommerce.foursalesecommerce.exception.RegistroNaoEncontradoException;
 import br.com.fs.ecommerce.foursalesecommerce.exception.UsuarioNaoEncontradoPorEmailException;
@@ -51,7 +52,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario atualizar(String id, UsuarioDto usuarioDto) {
+    public Usuario atualizar(String id, UsuarioUpdateDto usuarioDto) {
        if (!usuarioRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
        }
@@ -61,9 +62,8 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new EmailJaCadastradoException();
         }
 
-        usuarioDto.setId(id);
         usuarioDto.setSenha(passwordEncoder.encode(usuarioDto.getSenha()));
-       return usuarioRepository.save(Usuario.of(usuarioDto));
+        return usuarioRepository.save(Usuario.of(id, usuarioDto));
     }
 
     @Override
