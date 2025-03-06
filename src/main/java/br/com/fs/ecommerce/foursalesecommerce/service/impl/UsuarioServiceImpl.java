@@ -71,6 +71,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (!usuarioRepository.existsById(id)) {
             throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
         }
-        usuarioRepository.deleteById(id);
+        usuarioRepository.updateAtivoAndExcluidoEmById(id, false);
     }
 }

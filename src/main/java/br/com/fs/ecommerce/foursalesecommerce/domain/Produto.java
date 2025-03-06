@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +45,9 @@ public class Produto extends BaseEntity {
     @JsonBackReference
     @JsonIgnore
     private List<PedidoProduto> pedidoProdutos = new ArrayList<>();
+
+    private Boolean ativo;
+    private LocalDateTime excluidoEm;
 
     @PrePersist
     public void prePersist() {

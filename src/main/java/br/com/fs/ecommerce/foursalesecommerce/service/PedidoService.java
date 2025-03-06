@@ -17,7 +17,6 @@ public interface PedidoService {
     Page<Pedido> listar(Pageable pageable);
     Optional<Pedido> buscarPorId(String id);
     Pedido salvar(PedidoDto pedidoDto);
-
     Pedido atualizar(String id, PedidoUpdateDto pedidoDto);
     void excluir(String id);
     Pedido pagarPedido(String id);

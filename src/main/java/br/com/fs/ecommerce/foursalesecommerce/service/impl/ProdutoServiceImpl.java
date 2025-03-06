@@ -48,6 +48,6 @@ public class ProdutoServiceImpl implements ProdutoService {
         if (!produtoRepository.existsById(id)) {
             throw new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id);
         }
-        produtoRepository.deleteById(id);
+        produtoRepository.updateAtivoAndExcluidoEmById(id, false);
     }
 }

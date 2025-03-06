@@ -13,7 +13,6 @@ public interface CategoriaService {
     Page<Categoria> listar(Pageable pageable);
     Optional<Categoria> buscarPorId(String id);
     Categoria salvar(CategoriaDto categoriaDto);
-
     Categoria atualizar(String id, CategoriaUpdateDto categoriaDto);
     void excluir(String id);
 }

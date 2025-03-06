@@ -4,20 +4,24 @@ CREATE TABLE usuario (
                          email VARCHAR(255) UNIQUE NOT NULL,
                          senha VARCHAR(255) NOT NULL,
                          role VARCHAR(50) NOT NULL,
+                         ativo       BOOLEAN   DEFAULT FALSE,
                          criado_por   VARCHAR(255)                                                    NOT NULL,
                          criado_em    TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
                          alterado_por VARCHAR(255)                                                    NOT NULL,
-                         alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+                         alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+                         excluido_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL
 );
 
 CREATE TABLE categoria (
                            id VARCHAR(36) PRIMARY KEY,
                            nome VARCHAR(255) NOT NULL,
                            descricao TEXT,
+                           ativo       BOOLEAN   DEFAULT FALSE,
                            criado_por   VARCHAR(255)                                                    NOT NULL,
                            criado_em    TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
                            alterado_por VARCHAR(255)                                                    NOT NULL,
-                           alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+                           alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+                           excluido_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL
 );
 
 CREATE TABLE produto (
@@ -28,11 +32,13 @@ CREATE TABLE produto (
                          categoria_id VARCHAR(36) NOT NULL,
                          quantidade INT NOT NULL DEFAULT 0,
                          quantidade_reservada INT                                                             NOT NULL DEFAULT 0,
+                         ativo       BOOLEAN   DEFAULT FALSE,
                          criado_por           VARCHAR(255)                                                    NOT NULL,
                          criado_em            TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
                          alterado_por         VARCHAR(255)                                                    NOT NULL,
                          alterado_em          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-                         FOREIGN KEY (categoria_id) REFERENCES categoria(id) ON DELETE CASCADE
+                         excluido_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                         FOREIGN KEY (categoria_id) REFERENCES categoria (id)
 );
 
 CREATE TABLE pedido (
@@ -44,7 +50,7 @@ CREATE TABLE pedido (
                         criado_em    TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
                         alterado_por VARCHAR(255)                                                    NOT NULL,
                         alterado_em  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-                        FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
+                        FOREIGN KEY (usuario_id) REFERENCES usuario (id)
 );
 
 CREATE TABLE pedido_produto (

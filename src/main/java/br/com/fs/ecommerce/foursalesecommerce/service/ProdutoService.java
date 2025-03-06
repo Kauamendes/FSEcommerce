@@ -13,7 +13,6 @@ public interface ProdutoService {
     Page<Produto> listar(Pageable pageable);
     Optional<Produto> buscarPorId(String id);
     Produto salvar(ProdutoDto produtoDto);
-
     Produto atualizar(String id, ProdutoUpdateDto produtoDto);
     void excluir(String id);
 }

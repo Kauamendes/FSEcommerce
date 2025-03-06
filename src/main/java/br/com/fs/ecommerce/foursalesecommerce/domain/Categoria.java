@@ -8,6 +8,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static java.util.Objects.isNull;
@@ -25,6 +26,8 @@ public class Categoria extends BaseEntity {
     private String id;
     private String nome;
     private String descricao;
+    private Boolean ativo;
+    private LocalDateTime excluidoEm;
 
     @PrePersist
     public void prePersist() {

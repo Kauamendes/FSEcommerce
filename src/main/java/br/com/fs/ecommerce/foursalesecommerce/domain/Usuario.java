@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,8 @@ public class Usuario extends BaseEntity implements UserDetails {
     private String nome;
     private String email;
     private String senha;
+    private Boolean ativo;
+    private LocalDateTime excluidoEm;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -52,6 +55,11 @@ public class Usuario extends BaseEntity implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return ativo;
     }
 
     public static Usuario of(UsuarioDto usuarioDto) {
