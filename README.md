@@ -1,179 +1,144 @@
-# Projeto Spring Boot 3 - Ecommerce
+# 🚀 Foursquare Ecommerce API
 
-Este é um projeto de ecommerce desenvolvido com **Spring Boot 3**. Ele utiliza um banco de dados **MySQL** para armazenamento de dados e inclui uma configuração inicial para popular o banco de dados automaticamente ao rodar o projeto. A documentação da API é gerada automaticamente pelo **Swagger UI**.
+Plataforma de e-commerce **multi-tenant**, moderna e altamente performática, construída para operar em **escala horizontal**.  
+Projetada para atender milhares de lojas de forma isolada, segura e eficiente, compartilhando a mesma infraestrutura.
 
----
-
-## Tecnologias Utilizadas
-
-- **Spring Boot 3**: Framework principal para desenvolvimento da aplicação.
-- **MySQL 8.0**: Banco de dados relacional para armazenamento de dados.
-- **Swagger UI**: Documentação interativa da API.
-- **Spring Security**: Autenticação e autorização com **JWT** (JSON Web Token).
-- **Flyway**: Controle de versão de scripts de migração de banco de dados.
-- **Maven**: Gerenciamento de dependências e build do projeto.
+> Este projeto é voltado para estudos avançados de arquitetura, performance e boas práticas com Spring Boot moderno.
 
 ---
 
-## Pré-Requisitos
+## ✨ Principais Características
 
-Antes de rodar o projeto, certifique-se de ter os seguintes requisitos instalados:
-
-- **Java 17 ou superior**: Necessário para executar a aplicação Spring Boot.
-- **MySQL Workbench** (opcional): Para gerenciar o banco de dados localmente.
-- **Maven**: Para compilar e rodar o projeto.
-- **Docker** (opcional): Para rodar o MySQL em um container.
+- Arquitetura **Multi-tenant (Shared Schema)** com isolamento por linha.
+- Identificadores numéricos **TSID (Time-Sorted Unique Identifier)**.
+- Alta concorrência com **Virtual Threads (Project Loom)**.
+- Segurança baseada em **JWT**, com `tenantId` embutido no token.
+- Migrações de banco versionadas e prontas para evolução.
 
 ---
 
-## Configuração do Banco de Dados
+## 🛠️ Stack Tecnológica
 
-O projeto utiliza o **MySQL** como banco de dados. Você pode configurá-lo de duas maneiras: usando **Docker** ou **MySQL Workbench**.
+- **Java 25**
+- **Spring Boot 4**
+- **Jetty Web Server**
+- **Hibernate 7**
+- **MySQL 8.4 (LTS)**
+- **Spring Security + JWT**
+- **Flyway**
+- **Docker & Docker Compose**
 
-### Opção 1: Usando Docker (Recomendado)
+> ℹ️ **Nota**: O projeto utiliza **Jetty** como servidor web embutido, uma vez que o **Undertow não possui suporte oficial ao Spring Boot 4** no momento.
 
-1. **Instale o Docker** em sua máquina, caso ainda não tenha.
-2. Na raiz do projeto, há um arquivo `docker-compose.yml` configurado para subir um container do MySQL.
-3. Execute o seguinte comando para iniciar o banco de dados:
+---
 
-   ```bash
-   docker-compose up
+## 🏗️ Arquitetura de Identificadores (TSID)
 
-Isso criará um container do MySQL com as seguintes configurações:
+O projeto utiliza **TSIDs** em vez de UUIDs ou IDs sequenciais tradicionais.
 
-    Banco de dados: fsecommerce
+### Por quê TSID?
 
-    Usuário: usuario
+- **Performance**: Apenas 8 bytes (`BIGINT`).
+- **Ordenação temporal natural** (melhor uso de índices B-Tree).
+- **Geração distribuída**, sem dependência do banco.
+- **Preparado para sharding** e ambientes distribuídos.
 
-    Senha: senha
+---
 
-    Porta: 3306
+## 🧩 Multi-tenancy Transparente
 
-    O banco de dados estará pronto para uso.
+O isolamento de dados ocorre automaticamente na camada de persistência:
 
-### Opção 2: Usando MySQL Workbench (Sem Docker)
+1. O usuário se autentica e recebe um **JWT**.
+2. O `tenantId` é extraído do token.
+3. O valor é armazenado no `TenantContext`.
+4. O Hibernate aplica o filtro de tenant em todas as queries.
 
-   Crie um banco de dados chamado fsecommerce no MySQL Workbench.
+Exemplo prático:
 
-   Crie um usuário com as seguintes credenciais:
+```sql
+SELECT * FROM produto;
+```
 
-        Usuário: seu_usuario
-        Senha: sua_senha
+é convertido automaticamente em:
 
-   Atualize o arquivo application.properties (ou application.yml) com as credenciais do banco de dados:
-   
-    spring.datasource.url=jdbc:mysql://localhost:3306/fsecommerce
-    spring.datasource.username=seu_usuario
-    spring.datasource.password=sua_senha
-    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-    spring.jpa.hibernate.ddl-auto=update
-    spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+```sql
+SELECT * FROM produto WHERE tenant_id = ?;
+```
 
-## Rodando o Projeto
-### Passo 1: Clone o Repositório
+Nenhuma lógica adicional é necessária nos repositórios.
 
-Clone o repositório do projeto:
-bash
-Copy
+---
 
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
-cd nome-do-repositorio
+## 🚀 Executando o Projeto Localmente
 
-### Passo 2: Execute a Aplicação
+### Pré-requisitos
 
-Com o banco de dados configurado, execute a aplicação Spring Boot:
+- JDK 25
+- Maven 3.9+
+- Docker
+- Docker Compose
 
-   Usando Maven:
-    bash
-        
-    ./mvnw spring-boot:run
+---
 
-Usando Gradle:
-    bash
-    
-    ./gradlew bootRun
+### 1️⃣ Subir o Banco de Dados
 
-A aplicação será iniciada na porta 8080 por padrão.
-Inserção de Dados Iniciais
+```bash
+docker-compose up -d
+```
 
-Ao rodar a aplicação pela primeira vez, os dados iniciais serão inseridos automaticamente no banco de dados. Isso inclui:
+---
 
-   Usuários:
+### 2️⃣ Compilar e Rodar a Aplicação
 
-        Admin: admin@ecommerce.com (senha: senha_admin, role: ROLE_ADMIN)
+```bash
+mvn clean install
+mvn spring-boot:run
+```
 
-        Cliente: cliente1@ecommerce.com (senha: senha_cliente, role: ROLE_USUARIO)
+---
 
-   Categorias:
+## 📖 Documentação da API
 
-        Eletrônicos
+A API expõe documentação interativa via **Swagger UI**:
 
-        Computadores
+👉 http://localhost:8080/swagger-ui/index.html
 
-        Acessórios
+---
 
-   Produtos:
+## 🔐 Dados Iniciais (Seed)
 
-        Smartphone
+Durante o primeiro boot, o Flyway cria automaticamente um tenant inicial para testes:
 
-        Notebook Gamer
+| Campo           | Valor                 |
+|-----------------|-----------------------|
+| Tenant Name     | Loja Matriz           |
+| Tenant ID       | Gerado via TSID       |
+| Admin Email     | admin@fsecommerce.com |
+| Admin Password  | senha_admin           |
 
-        Mouse Óptico
+---
 
-        Teclado Mecânico
+## 📁 Estrutura do Projeto
 
-        Fone de Ouvido Bluetooth
+```
+src/main/java/.../config/id
+    Configuração de TSID e geração de IDs
 
-        Monitor 4K
+src/main/java/.../config/tenant
+    Contexto do tenant e filtros de segurança
 
-## Acessando o Swagger UI
+src/main/java/.../domain
+    Entidades de domínio multi-tenant
 
-Após rodar a aplicação, acesse a documentação interativa da API no Swagger UI:
+src/main/resources/db/migration
+    Migrações Flyway (SQL)
+```
 
-**http://localhost:8080/fsecommerce/swagger-ui/index.html**
+---
 
-## Usuários e Senhas Iniciais
+## 📌 Status do Projeto
 
-Para testar os endpoints protegidos, utilize os seguintes dados de login:
+🚧 Em evolução contínua — foco em arquitetura, performance e escalabilidade.
 
-| **Usuário** | **Email**               | **Senha**       | **Role**      |
-|-------------|-------------------------|-----------------|---------------|
-| Admin       | `admin@ecommerce.com`   | `senha_admin`   | `ROLE_ADMIN`  |
-| Cliente     | `cliente1@ecommerce.com`| `senha_cliente` | `ROLE_USUARIO`|
-
-## Endpoints Disponíveis
-
-### Aqui estão alguns dos principais endpoints disponíveis na API:
-Usuários
-
-    POST /usuarios: Criar um novo usuário.
-
-    GET /usuarios: Listar todos os usuários.
-
-Produtos
-
-    POST /produtos: Criar um novo produto.
-
-    GET /produtos: Listar todos os produtos.
-
-Pedidos
-
-    POST /pedidos: Criar um novo pedido.
-
-    GET /pedidos: Listar todos os pedidos.
-
-## Estrutura do Projeto
-
-A estrutura do projeto está organizada da seguinte forma:
-
-    src/main/java: Código-fonte da aplicação.
-
-    src/main/resources:
-
-        application.properties: Configurações da aplicação.
-
-        db/migrations: Scripts SQL para inicialização do banco de dados.
-
-    docker-compose.yml: Configuração do MySQL com Docker.
-
-    pom.xml: Dependências do Maven.
+Discussões técnicas, sugestões e contribuições são bem-vindas.
