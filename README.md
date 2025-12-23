@@ -122,17 +122,35 @@ Durante o primeiro boot, o Flyway cria automaticamente um tenant inicial para te
 ## 📁 Estrutura do Projeto
 
 ```
-src/main/java/.../config/id
-    Configuração de TSID e geração de IDs
+src/main/java/.../annotations:
 
-src/main/java/.../config/tenant
-    Contexto do tenant e filtros de segurança
+@Tsid: Anotação customizada para identificar campos que utilizam a geração de IDs de 64 bits ordenáveis.
 
-src/main/java/.../domain
-    Entidades de domínio multi-tenant
+src/main/java/.../components:
 
-src/main/resources/db/migration
-    Migrações Flyway (SQL)
+SecurityFilter: Filtro central que intercepta o JWT, autentica o usuário e injeta o tenantId no contexto da thread.
+
+src/main/java/.../config:
+
+Configurações globais da aplicação (Spring Security, Swagger, CORS).
+
+src/main/java/.../domain:
+
+TenantEntity: Classe base (@MappedSuperclass) que contém a lógica de @Filter e o campo tenantId.
+
+Entidades de negócio (Usuario, Produto, etc.) que herdam o comportamento multi-tenant.
+
+src/main/java/.../support:
+
+TenantContext: Gerenciador do ThreadLocal que armazena o ID da loja durante o ciclo de vida da requisição.
+
+TenantAspect: Aspecto que ativa automaticamente os filtros do Hibernate antes da execução dos serviços.
+
+TsidIdentifierGenerator: Implementação do gerador compatível com o Hibernate 7 e a biblioteca hypersistence-tsid.
+
+src/main/resources/db/migration:
+
+Scripts do Flyway (V1_0_0__...) que definem a estrutura de tabelas usando tipos BIGINT para performance máxima.
 ```
 
 ---
