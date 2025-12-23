@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface ProdutoService {
 
     Page<Produto> listar(Pageable pageable);
-    Optional<Produto> buscarPorId(String id);
+    Optional<Produto> buscarPorId(Long id);
     Produto salvar(ProdutoDto produtoDto);
-    Produto atualizar(String id, ProdutoUpdateDto produtoDto);
-    void excluir(String id);
+    Produto atualizar(Long id, ProdutoUpdateDto produtoDto);
+    void excluir(Long id);
 }

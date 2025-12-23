@@ -25,7 +25,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public Optional<Categoria> buscarPorId(String id) {
+    public Optional<Categoria> buscarPorId(Long id) {
         return categoriaRepository.findById(id);
     }
 
@@ -35,7 +35,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public Categoria atualizar(String id, CategoriaUpdateDto categoriaDto) {
+    public Categoria atualizar(Long id, CategoriaUpdateDto categoriaDto) {
        if (!categoriaRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Categoria.class.getSimpleName(), id);
        }
@@ -43,7 +43,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public void excluir(String id) {
+    public void excluir(Long id) {
         if (!categoriaRepository.existsById(id)) {
             throw new RegistroNaoEncontradoException(Categoria.class.getSimpleName(), id);
         }

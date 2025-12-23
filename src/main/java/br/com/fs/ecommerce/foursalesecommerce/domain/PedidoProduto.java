@@ -1,5 +1,6 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.annotations.Tsid;
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoProdutoDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +20,8 @@ import static java.util.Objects.isNull;
 public class PedidoProduto {
 
     @Id
-    private String id;
+    @Tsid
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)
@@ -34,13 +36,6 @@ public class PedidoProduto {
 
     @Column(name = "preco_unitario", precision = 10, scale = 2, nullable = false)
     private BigDecimal precoUnitario;
-
-    @PrePersist
-    public void prePersist() {
-        if (isNull(id)) {
-            id = UUID.randomUUID().toString();
-        }
-    }
 
     public static PedidoProduto of(PedidoProdutoDto pedidoProdutoDto) {
         if (isNull(pedidoProdutoDto)) return null;

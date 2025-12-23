@@ -2,6 +2,8 @@ package br.com.fs.ecommerce.foursalesecommerce.config.security;
 
 import br.com.fs.ecommerce.foursalesecommerce.exception.UsuarioNaoEncontradoPorEmailException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
+import br.com.fs.ecommerce.foursalesecommerce.support.TenantContext;
+import com.auth0.jwt.JWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +39,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
         if (nonNull(token)) {
             var email = tokenService.validateToken(token);
+            var tenantId = JWT.decode(token).getClaim("tenantId").asLong();
+
             if (nonNull(email)) {
                 UserDetails usuario = usuarioRepository.findByEmail(email)
                         .orElseThrow(() -> new UsuarioNaoEncontradoPorEmailException(email));
@@ -44,8 +48,16 @@ public class SecurityFilter extends OncePerRequestFilter {
                 var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+            if (nonNull(tenantId)) {
+                TenantContext.setCurrentTenant(tenantId);
+            }
         }
-        filterChain.doFilter(request, response);
+
+        try {
+            filterChain.doFilter(request, response);
+        } finally {
+            TenantContext.clear();
+        }
     }
 
     private String recoverToken(HttpServletRequest request) {

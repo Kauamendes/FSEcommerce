@@ -32,7 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Optional<Usuario> buscarPorId(String id) {
+    public Optional<Usuario> buscarPorId(Long id) {
         return usuarioRepository.findById(id);
     }
 
@@ -52,7 +52,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario atualizar(String id, UsuarioUpdateDto usuarioDto) {
+    public Usuario atualizar(Long id, UsuarioUpdateDto usuarioDto) {
        if (!usuarioRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
        }
@@ -67,7 +67,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public void excluir(String id) {
+    public void excluir(Long id) {
         if (!usuarioRepository.existsById(id)) {
             throw new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id);
         }

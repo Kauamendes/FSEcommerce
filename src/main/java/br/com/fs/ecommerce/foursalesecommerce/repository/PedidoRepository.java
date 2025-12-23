@@ -14,14 +14,14 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface PedidoRepository extends JpaRepository<Pedido, String> {
+public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
     @Modifying
     @Transactional
     @Query("UPDATE Pedido p SET p.status = :status WHERE p.id = :id")
-    void updateStatusById(@Param("id") String id, @Param("status") Status status);
+    void updateStatusById(@Param("id") Long id, @Param("status") Status status);
 
-    List<Pedido> findAllByUsuarioId(String usuarioId);
+    List<Pedido> findAllByUsuarioId(Long usuarioId);
 
     List<Pedido> findAllByUsuarioEmail(String email);
 

@@ -1,5 +1,6 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.annotations.Tsid;
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoUpdateDto;
 import jakarta.persistence.*;
@@ -19,10 +20,11 @@ import static java.util.Objects.isNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Pedido extends BaseEntity{
+public class Pedido extends TenantEntity {
 
     @Id
-    private String id;
+    @Tsid
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
@@ -38,13 +40,6 @@ public class Pedido extends BaseEntity{
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal subtotal;
 
-    @PrePersist
-    public void prePersist() {
-        if (isNull(id)) {
-            id = UUID.randomUUID().toString();
-        }
-    }
-
     public static Pedido of(PedidoDto pedidoDto) {
         if (isNull(pedidoDto)) return null;
         Pedido pedido = Pedido.builder()
@@ -58,7 +53,7 @@ public class Pedido extends BaseEntity{
         return pedido;
     }
 
-    public static Pedido of(String id, PedidoUpdateDto pedidoDto) {
+    public static Pedido of(Long id, PedidoUpdateDto pedidoDto) {
         if (isNull(pedidoDto)) return null;
         Pedido pedido = Pedido.builder()
                 .id(id)

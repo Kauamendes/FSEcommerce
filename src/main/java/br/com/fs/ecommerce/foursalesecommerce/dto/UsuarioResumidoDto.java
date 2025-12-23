@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Builder
 public class UsuarioResumidoDto implements Serializable {
 
-    private String id;
+    private Long id;
     private String nome;
     private String email;
 

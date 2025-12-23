@@ -33,6 +33,7 @@ public class TokenService {
                     .withIssuedAt(Date.from(Instant.now()))
                     .withClaim("userId", usuario.getId())
                     .withClaim("roles", usuario.getAuthorities().toString())
+                    .withClaim("tenantId", usuario.getTenantId())
                     .withExpiresAt(Date.from(this.generateExpirationDate()))
                     .withJWTId(UUID.randomUUID().toString())
                     .withNotBefore(Date.from(Instant.now()))

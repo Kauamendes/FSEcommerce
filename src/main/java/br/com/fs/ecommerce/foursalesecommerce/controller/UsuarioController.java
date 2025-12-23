@@ -44,7 +44,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", description = "Busca de usuário retornada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    public UsuarioResumidoDto buscarPorId(@PathVariable("id") String id) {
+    public UsuarioResumidoDto buscarPorId(@PathVariable("id") Long id) {
         Usuario usuario = usuarioService.buscarPorId(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException(Usuario.class.getSimpleName(), id));
         return UsuarioResumidoDto.of(usuario);
@@ -67,7 +67,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     public UsuarioResumidoDto atualizar(@RequestBody @Validated UsuarioUpdateDto usuarioDto,
-                                        @PathVariable("id") String id) {
+                                        @PathVariable("id") Long id) {
         return UsuarioResumidoDto.of(usuarioService.atualizar(id, usuarioDto));
     }
 
@@ -77,7 +77,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "204", description = "Usuário excluído com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    public ResponseEntity<Void> excluir(@PathVariable("id") String id) {
+    public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
         usuarioService.excluir(id);
         return ResponseEntity.noContent().build();
     }

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @Builder
 public class ProdutoDto {
 
-    private String id;
+    private Long id;
 
     @NotBlank(message = "O nome do produto não pode ser vazio")
     private String nome;

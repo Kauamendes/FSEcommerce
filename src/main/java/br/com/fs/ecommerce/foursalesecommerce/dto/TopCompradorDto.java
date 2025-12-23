@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class TopCompradorDto {
 
-    private String usuarioId;
+    private Long usuarioId;
     private String usuarioNome;
     private Long totalPedidos;
     private BigDecimal totalGasto;

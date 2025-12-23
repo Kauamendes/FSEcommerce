@@ -15,13 +15,13 @@ import java.util.Optional;
 public interface PedidoService {
 
     Page<Pedido> listar(Pageable pageable);
-    Optional<Pedido> buscarPorId(String id);
+    Optional<Pedido> buscarPorId(Long id);
     Pedido salvar(PedidoDto pedidoDto);
-    Pedido atualizar(String id, PedidoUpdateDto pedidoDto);
-    void excluir(String id);
-    Pedido pagarPedido(String id);
+    Pedido atualizar(Long id, PedidoUpdateDto pedidoDto);
+    void excluir(Long id);
+    Pedido pagarPedido(Long id);
 
-    List<Pedido> buscarPedidosUsuario(String usuarioId);
+    List<Pedido> buscarPedidosUsuario(Long usuarioId);
     List<Pedido> buscarPedidosUsuarioAutenticado(String emailUsuarioAutenticado);
 
     List<TopCompradorDto> listarTopCompradores(Pageable pageable);

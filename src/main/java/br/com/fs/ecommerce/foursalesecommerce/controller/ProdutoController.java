@@ -43,7 +43,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "200", description = "Busca de produto retornada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    public ProdutoDto buscarPorId(@PathVariable("id") String id) {
+    public ProdutoDto buscarPorId(@PathVariable("id") Long id) {
         Produto produto = produtoService.buscarPorId(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id));
         return ProdutoDto.of(produto);
@@ -66,7 +66,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
     public ProdutoDto atualizar(@RequestBody @Validated ProdutoUpdateDto produtoDto,
-                                @PathVariable("id") String id) {
+                                @PathVariable("id") Long id) {
         return ProdutoDto.of(produtoService.atualizar(id, produtoDto));
     }
 
@@ -76,7 +76,7 @@ public class ProdutoController {
             @ApiResponse(responseCode = "204", description = "Produto excluído com sucesso"),
             @ApiResponse(responseCode = "404", description = "Produto não encontrado")
     })
-    public ResponseEntity<Void> excluir(@PathVariable("id") String id) {
+    public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
         produtoService.excluir(id);
         return ResponseEntity.noContent().build();
     }

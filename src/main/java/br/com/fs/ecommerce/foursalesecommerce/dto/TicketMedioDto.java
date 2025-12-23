@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TicketMedioDto {
 
-    private String usuarioId;
+    private Long usuarioId;
     private String usuarioNome;
     private Double ticketMedio;
 }

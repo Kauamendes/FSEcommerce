@@ -9,13 +9,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, String> {
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByEmail(String email);
 
     @Modifying
     @Transactional
     @Query("UPDATE Usuario u SET u.ativo=:ativo, u.excluidoEm=CURRENT_TIMESTAMP WHERE u.id =:id")
-    void updateAtivoAndExcluidoEmById(@Param("id") String id,
+    void updateAtivoAndExcluidoEmById(@Param("id") Long id,
                                       @Param("ativo") boolean ativo);
 }

@@ -43,7 +43,7 @@ public class CategoriaController {
             @ApiResponse(responseCode = "200", description = "Busca de categoria retornada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Categoria não encontrado")
     })
-    public CategoriaDto buscarPorId(@PathVariable("id") String id) {
+    public CategoriaDto buscarPorId(@PathVariable("id") Long id) {
         Categoria categoria = categoriaService.buscarPorId(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException(Categoria.class.getSimpleName(), id));
         return CategoriaDto.of(categoria);
@@ -66,7 +66,7 @@ public class CategoriaController {
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
     public CategoriaDto atualizar(@RequestBody @Validated CategoriaUpdateDto categoriaDto,
-                                  @PathVariable("id") String id) {
+                                  @PathVariable("id") Long id) {
         return CategoriaDto.of(categoriaService.atualizar(id, categoriaDto));
     }
 
@@ -76,7 +76,7 @@ public class CategoriaController {
             @ApiResponse(responseCode = "204", description = "Categoria excluída com sucesso"),
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada")
     })
-    public ResponseEntity<Void> excluir(@PathVariable("id") String id) {
+    public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
         categoriaService.excluir(id);
         return ResponseEntity.noContent().build();
     }

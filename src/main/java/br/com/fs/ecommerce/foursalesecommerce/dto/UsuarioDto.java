@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Builder
 public class UsuarioDto implements Serializable {
 
-    private String id;
+    private Long id;
 
     @NotBlank(message = "O nome do usuário não pode ser vazio")
     private String nome;

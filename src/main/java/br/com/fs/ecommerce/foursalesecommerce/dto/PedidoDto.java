@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class PedidoDto {
 
-    private String id;
+    private Long id;
 
     @NotNull(message = "O usuario do pedido não pode ser nulo")
     private UsuarioDto usuario;
