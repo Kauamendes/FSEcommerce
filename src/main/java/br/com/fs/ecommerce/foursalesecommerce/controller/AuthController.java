@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.security.auth.message.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +33,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "Autenticação realizada com sucesso"),
             @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
     })
-    public HttpEntity<AuthDto> login(@RequestBody LoginDto loginDto) throws AuthException {
+    public HttpEntity<AuthDto> login(@RequestBody LoginDto loginDto) {
        AuthDto authDto = loginService.logar(loginDto);
         return ResponseEntity.ok(authDto);
     }

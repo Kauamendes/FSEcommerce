@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: fourSalesEcommerce
+  profiles:
+      active: dev # Perfil padrão se nenhum for passado
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/fsecommerce
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    locations: classpath:db/migration
+
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+  threads:
+    virtual:
+      enabled: true
+
+server:
+  servlet:
+    context-path: /fsecommerce
+  port: 8080
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:chaveSecretaFSEcommerce}
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
