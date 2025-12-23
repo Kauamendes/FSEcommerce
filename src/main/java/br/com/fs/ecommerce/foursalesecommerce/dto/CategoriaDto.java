@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Builder
 public class CategoriaDto implements Serializable {
 
-    private String id;
+    private Long id;
 
     @NotBlank(message = "O nome da categoria não pode ser vazio")
     private String nome;

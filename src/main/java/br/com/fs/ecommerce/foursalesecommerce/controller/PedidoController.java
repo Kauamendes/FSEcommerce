@@ -49,7 +49,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "200", description = "Busca de pedido retornada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
     })
-    public PedidoDto buscarPorId(@PathVariable("id") String id) {
+    public PedidoDto buscarPorId(@PathVariable("id") Long id) {
         Pedido pedido = pedidoService.buscarPorId(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id));
         return PedidoDto.of(pedido);
@@ -88,7 +88,7 @@ public class PedidoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedidos do usuário retornados com sucesso")
     })
-    public List<PedidoDto> buscarPedidosUsuario(@RequestParam("usuarioId") String usuarioId) {
+    public List<PedidoDto> buscarPedidosUsuario(@RequestParam("usuarioId") Long usuarioId) {
         return pedidoService.buscarPedidosUsuario(usuarioId).stream()
                 .map(PedidoDto::of)
                 .toList();
@@ -122,7 +122,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "200", description = "Pedido pago com sucesso"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
     })
-    public PedidoDto pagarPedido(@PathVariable("id") String id) {
+    public PedidoDto pagarPedido(@PathVariable("id") Long id) {
         return PedidoDto.of(pedidoService.pagarPedido(id));
     }
 
@@ -133,7 +133,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
     })
     public PedidoDto atualizar(@RequestBody @Validated PedidoUpdateDto pedidoDto,
-                               @PathVariable("id") String id) {
+                               @PathVariable("id") Long id) {
         return PedidoDto.of(pedidoService.atualizar(id, pedidoDto));
     }
 
@@ -143,7 +143,7 @@ public class PedidoController {
             @ApiResponse(responseCode = "204", description = "Pedido excluído com sucesso"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado")
     })
-    public ResponseEntity<Void> excluir(@PathVariable("id") String id) {
+    public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
         pedidoService.excluir(id);
         return ResponseEntity.noContent().build();
     }

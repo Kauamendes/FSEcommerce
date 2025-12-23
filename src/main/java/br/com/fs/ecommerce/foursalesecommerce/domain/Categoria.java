@@ -1,5 +1,6 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.annotations.Tsid;
 import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaUpdateDto;
 import jakarta.persistence.Entity;
@@ -20,21 +21,15 @@ import static java.util.Objects.isNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Categoria extends BaseEntity {
+public class Categoria extends TenantEntity {
 
     @Id
-    private String id;
+    @Tsid
+    private Long id;
     private String nome;
     private String descricao;
     private Boolean ativo;
     private LocalDateTime excluidoEm;
-
-    @PrePersist
-    public void prePersist() {
-        if (isNull(id)) {
-            id = UUID.randomUUID().toString();
-        }
-    }
 
     public static Categoria of(CategoriaDto categoriaDto) {
         if (isNull(categoriaDto)) return null;
@@ -45,7 +40,7 @@ public class Categoria extends BaseEntity {
                 .build();
     }
 
-    public static Categoria of(String id, CategoriaUpdateDto categoriaDto) {
+    public static Categoria of(Long id, CategoriaUpdateDto categoriaDto) {
         if (isNull(categoriaDto)) return null;
         return Categoria.builder()
                 .id(id)

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 public class PedidoProdutoDto {
 
-    private String id;
+    private Long id;
     private PedidoDto pedido;
     private ProdutoDto produto;
     private Integer quantidade;

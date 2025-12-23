@@ -1,11 +1,14 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.annotations.Tsid;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoUpdateDto;
+import br.com.fs.ecommerce.foursalesecommerce.support.TsidIdentifierGenerator;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.IdGeneratorType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,10 +25,12 @@ import static java.util.Objects.isNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Produto extends BaseEntity {
+public class Produto extends TenantEntity {
 
     @Id
-    private String id;
+    @Tsid
+    private Long id;
+
     private String nome;
     private String descricao;
 
@@ -49,13 +54,6 @@ public class Produto extends BaseEntity {
     private Boolean ativo;
     private LocalDateTime excluidoEm;
 
-    @PrePersist
-    public void prePersist() {
-        if (isNull(id)) {
-            id = UUID.randomUUID().toString();
-        }
-    }
-
     public static Produto of(ProdutoDto produtoDto) {
         if (isNull(produtoDto)) return null;
         return Produto.builder()
@@ -69,7 +67,7 @@ public class Produto extends BaseEntity {
                 .build();
     }
 
-    public static Produto of(String id, ProdutoUpdateDto produtoDto) {
+    public static Produto of(Long id, ProdutoUpdateDto produtoDto) {
         if (isNull(produtoDto)) return null;
         return Produto.builder()
                 .id(id)

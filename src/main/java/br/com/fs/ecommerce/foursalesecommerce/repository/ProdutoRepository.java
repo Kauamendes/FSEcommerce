@@ -7,16 +7,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ProdutoRepository extends JpaRepository<Produto, String> {
+public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Modifying
     @Transactional
     @Query("UPDATE Produto p SET p.quantidade = p.quantidade - :quantidade WHERE p.id = :id")
-    void updateQuantidadeById(@Param("id") String id, @Param("quantidade") Integer quantidade);
+    void updateQuantidadeById(@Param("id") Long id, @Param("quantidade") Integer quantidade);
 
     @Modifying
     @Transactional
     @Query("UPDATE Produto p SET p.ativo=:ativo, p.excluidoEm=CURRENT_TIMESTAMP WHERE p.id =:id")
-    void updateAtivoAndExcluidoEmById(@Param("id") String id,
+    void updateAtivoAndExcluidoEmById(@Param("id") Long id,
                                       @Param("ativo") boolean ativo);
 }

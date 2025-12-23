@@ -1,5 +1,6 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.annotations.Tsid;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioUpdateDto;
 import jakarta.persistence.*;
@@ -22,10 +23,12 @@ import static java.util.Objects.isNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Usuario extends BaseEntity implements UserDetails {
+public class Usuario extends TenantEntity implements UserDetails {
 
     @Id
-    private String id;
+    @Tsid
+    private Long id;
+
     private String nome;
     private String email;
     private String senha;
@@ -34,13 +37,6 @@ public class Usuario extends BaseEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-
-    @PrePersist
-    public void prePersist() {
-        if (isNull(id)) {
-            id = UUID.randomUUID().toString();
-        }
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,7 +68,7 @@ public class Usuario extends BaseEntity implements UserDetails {
                 .build();
     }
 
-    public static Usuario of(String id, UsuarioUpdateDto usuarioDto) {
+    public static Usuario of(Long id, UsuarioUpdateDto usuarioDto) {
         return Usuario.builder()
                 .id(id)
                 .nome(usuarioDto.getNome())

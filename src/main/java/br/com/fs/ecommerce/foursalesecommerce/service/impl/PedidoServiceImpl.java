@@ -35,7 +35,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Optional<Pedido> buscarPorId(String id) {
+    public Optional<Pedido> buscarPorId(Long id) {
         return pedidoRepository.findById(id);
     }
 
@@ -49,7 +49,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public Pedido atualizar(String id, PedidoUpdateDto pedidoDto) {
+    public Pedido atualizar(Long id, PedidoUpdateDto pedidoDto) {
        if (!pedidoRepository.existsById(id)) {
            throw new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id);
        }
@@ -60,7 +60,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public void excluir(String id) {
+    public void excluir(Long id) {
         if (!pedidoRepository.existsById(id)) {
             throw new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id);
         }
@@ -69,7 +69,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public Pedido pagarPedido(String id) {
+    public Pedido pagarPedido(Long id) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RegistroNaoEncontradoException(Pedido.class.getSimpleName(), id));
 
@@ -83,7 +83,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public List<Pedido> buscarPedidosUsuario(String usuarioId) {
+    public List<Pedido> buscarPedidosUsuario(Long usuarioId) {
         return pedidoRepository.findAllByUsuarioId(usuarioId);
     }
 

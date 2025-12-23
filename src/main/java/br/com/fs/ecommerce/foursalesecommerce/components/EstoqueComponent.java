@@ -24,11 +24,11 @@ public class EstoqueComponent {
 
     @Transactional
     public void reservarEstoque(List<PedidoProdutoDto> pedidoProdutos) {
-        List<String> produtoIds = pedidoProdutos.stream()
+        List<Long> produtoIds = pedidoProdutos.stream()
                 .map(p -> p.getProduto().getId())
                 .toList();
 
-        Map<String, Produto> produtosMap = produtoRepository.findAllById(produtoIds).stream()
+        Map<Long, Produto> produtosMap = produtoRepository.findAllById(produtoIds).stream()
                 .collect(Collectors.toMap(Produto::getId, produto -> produto));
 
         for (PedidoProdutoDto pedidoProduto : pedidoProdutos) {
@@ -50,11 +50,11 @@ public class EstoqueComponent {
 
     @Transactional
     public void atualizarQuantidadeProdutoAposPagamento(List<PedidoProduto> pedidoProdutos) {
-        List<String> produtoIds = pedidoProdutos.stream()
+        List<Long> produtoIds = pedidoProdutos.stream()
                 .map(pd -> pd.getProduto().getId())
                 .toList();
 
-        Map<String, Produto> produtosMap = produtoRepository.findAllById(produtoIds).stream()
+        Map<Long, Produto> produtosMap = produtoRepository.findAllById(produtoIds).stream()
                 .collect(Collectors.toMap(Produto::getId, produto -> produto));
 
         for (PedidoProduto pedidoProduto : pedidoProdutos) {

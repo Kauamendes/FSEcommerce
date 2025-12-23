@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface UsuarioService {
 
     Page<Usuario> listar(Pageable pageable);
-    Optional<Usuario> buscarPorId(String id);
+    Optional<Usuario> buscarPorId(Long id);
     Usuario buscarPorEmail(String email);
     Usuario salvar(UsuarioDto usuarioDto);
-    Usuario atualizar(String id, UsuarioUpdateDto usuarioDto);
-    void excluir(String id);
+    Usuario atualizar(Long id, UsuarioUpdateDto usuarioDto);
+    void excluir(Long id);
 }
