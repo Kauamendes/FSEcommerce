@@ -1,0 +1,41 @@
+name: Java CI with E2E and Load Tests
+
+on: [ push ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Unit & Integration Tests (Maven)
+        run: mvn test
+
+      - name: Build and Start Spring Boot App
+        run: |
+          mvn clean package -DskipTests
+          java -jar target/*.jar &
+          npx wait-on http://localhost:8080 --timeout 60000
+
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+
+      - name: Run k6 Stress Test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: stress-test.js

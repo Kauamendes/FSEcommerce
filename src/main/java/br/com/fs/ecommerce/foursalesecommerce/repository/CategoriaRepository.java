@@ -11,7 +11,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Categoria c SET c.ativo=:ativo, c.excluidoEm=CURRENT_TIMESTAMP WHERE c.id =:id")
-    void updateAtivoAndExcluidoEmById(@Param("id") Long id,
-                                      @Param("ativo") boolean ativo);
+    @Query("UPDATE Categoria c SET c.ativo=:ativo WHERE c.id =:id")
+    void updateAtivoById(@Param("id") Long id,
+                         @Param("ativo") boolean ativo);
 }

@@ -1,6 +1,8 @@
 package br.com.fs.ecommerce.foursalesecommerce.domain;
 
+import br.com.fs.ecommerce.foursalesecommerce.support.TenantEntityListener;
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +15,9 @@ import org.hibernate.annotations.ParamDef;
 @Setter
 @FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "tenantId", type = Long.class))
 @Filter(name = "tenantFilter", condition = "tenant_id = :tenantId")
+@EntityListeners(TenantEntityListener.class)
 public abstract class TenantEntity extends BaseEntity {
 
     @Column(name = "tenant_id", nullable = false, updatable = false)
-    private String tenantId;
+    private Long tenantId;
 }

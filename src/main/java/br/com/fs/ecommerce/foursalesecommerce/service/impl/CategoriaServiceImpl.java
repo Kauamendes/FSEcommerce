@@ -47,6 +47,6 @@ public class CategoriaServiceImpl implements CategoriaService {
         if (!categoriaRepository.existsById(id)) {
             throw new RegistroNaoEncontradoException(Categoria.class.getSimpleName(), id);
         }
-        categoriaRepository.updateAtivoAndExcluidoEmById(id, false);
+        categoriaRepository.updateAtivoById(id, false);
     }
 }

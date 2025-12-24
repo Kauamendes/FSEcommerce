@@ -9,12 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
-
-import static java.util.Objects.isNull;
 
 @Entity
 @Table(name = "usuario")
@@ -33,7 +29,6 @@ public class Usuario extends TenantEntity implements UserDetails {
     private String email;
     private String senha;
     private Boolean ativo;
-    private LocalDateTime excluidoEm;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
