@@ -39,7 +39,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = this.recoverToken(request);
         if (nonNull(token)) {
             var email = tokenService.validateToken(token);
-            var tenantId = Long.parseLong(JWT.decode(token).getClaim("tenantId").asString());
+            var tenantId = Long.parseLong(JWT.decode(token).getClaim("tenantId").toString());
 
             if (nonNull(email)) {
                 UserDetails usuario = usuarioRepository.findByEmail(email)

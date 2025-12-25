@@ -28,7 +28,7 @@ public class EstoqueComponent {
                 .map(p -> p.getProduto().getId())
                 .toList();
 
-        Map<Long, Produto> produtosMap = produtoRepository.findAllById(produtoIds).stream()
+        Map<Long, Produto> produtosMap = produtoRepository.findAllByIdComTenant(produtoIds).stream()
                 .collect(Collectors.toMap(Produto::getId, produto -> produto));
 
         for (PedidoProdutoDto pedidoProduto : pedidoProdutos) {

@@ -21,4 +21,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query("UPDATE Usuario u SET u.ativo=:ativo WHERE u.id =:id")
     void updateAtivoById(@Param("id") Long id,
                          @Param("ativo") boolean ativo);
+
+    Optional<Usuario> findOneById(Long id);
+
+    boolean existsOneById(Long id);
 }

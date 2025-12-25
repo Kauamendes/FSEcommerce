@@ -40,7 +40,8 @@ public class Produto extends TenantEntity {
     private Integer quantidade;
 
     @Column(name = "quantidade_reservada")
-    private Integer quantidadeReservada;
+    @Builder.Default
+    private Integer quantidadeReservada = 0;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference

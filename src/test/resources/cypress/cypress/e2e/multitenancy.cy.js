@@ -1,39 +1,67 @@
-describe('Garantia de Isolamento Total por Tenant', () => {
-  const tenants = [
-    { id: 'A', admin: 'admin@tenantA.com', catId: 200 },
-    { id: 'B', admin: 'admin@tenantB.com', catId: 201 }
-  ];
+describe('Garantia de Isolamento Total por Tenant (Full Stack)', () => {
+  const tenants = {
+    moda: { admin: 'admin@fashion.com', catId: 200, prodId: 300, userId: 1 },
+    livros: { admin: 'admin@saber.com', catId: 205, prodId: 310, userId: 2 }
+  };
 
   let tokens = {};
 
   before(() => {
-    cy.login('admin@tenantA.com', '123').then(t => tokens.adminA = t);
-    cy.login('admin@tenantB.com', '123').then(t => tokens.adminB = t);
+    cy.login(tenants.moda.admin, '123').then(t => tokens.moda = t);
+    cy.login(tenants.livros.admin, '123').then(t => tokens.livros = t);
   });
 
-  it('deve isolar produtos entre tenants', () => {
-    const nomeUnico = `Prod-A-${Date.now()}`;
+  // --- 1. ISOLAMENTO DE CATEGORIAS ---
+  it('Deve isolar Categorias: Tenant Livros não deve ver categorias de Moda', () => {
+    cy.requestAs('GET', '/categorias', tokens.livros).then(res => {
+      const categorias = res.body.content || res.body;
+      const temModa = categorias.some(c => c.id === tenants.moda.catId);
+      expect(temModa).to.be.false;
+    });
 
-    // Criar no A
-    cy.requestAs('POST', '/produtos', tokens.adminA, {
-      nome: nomeUnico,
-      preco: 50.0,
-      categoria: { id: 200 }, // ID do SQL
-      quantidade: 10,
-      ativo: true
+    cy.requestAs('GET', `/categorias/${tenants.moda.catId}`, tokens.livros).then(res => {
+      expect(res.status).to.equal(404);
+    });
+  });
+
+  // --- 2. ISOLAMENTO DE USUÁRIOS ---
+  it('Deve isolar Usuários: Admins não devem listar usuários de outros tenants', () => {
+    cy.requestAs('GET', '/usuarios', tokens.moda).then(res => {
+      const usuarios = res.body.content || res.body;
+      // O admin de Moda não deve ver o usuário de Livros
+      const temUserLivros = usuarios.some(u => u.email === tenants.livros.admin);
+      expect(temUserLivros).to.be.false;
+    });
+  });
+
+  // --- 3. ISOLAMENTO DE PEDIDOS (CRÍTICO) ---
+  it('Deve isolar Pedidos: Impedir acesso e criação cross-tenant', () => {
+    const nomePedido = `Pedido-Teste-${Date.now()}`;
+
+    // Tentativa de ataque: Tenant Moda tenta criar pedido usando PRODUTO de Livros
+    cy.requestAs('POST', '/pedidos', tokens.moda, {
+      itens: [{ produtoId: tenants.livros.prodId, quantidade: 1 }],
+      status: "AGUARDANDO_PAGAMENTO"
     }).then(res => {
-      const idA = res.body.id;
+      // O sistema deve falhar pois o produtoId 310 não existe no contexto de Moda
+      expect(res.status).to.be.oneOf([400, 404]);
+    });
 
-      // Tenant B não deve ver na lista
-      cy.requestAs('GET', '/produtos', tokens.adminB).then(resB => {
-        const existeNoB = resB.body.content.some(p => p.nome === nomeUnico);
-        expect(existeNoB).to.be.false;
-      });
+    // Validar que o admin de Livros não vê pedidos de Moda
+    // (Assumindo que já exista um pedido ID 500 de Moda no seu banco)
+    const pedidoIdModa = 500;
+    cy.requestAs('GET', `/pedidos/${pedidoIdModa}`, tokens.livros).then(res => {
+      expect(res.status).to.equal(404);
+    });
+  });
 
-      // Tenant B não deve acessar por ID direto
-      cy.requestAs('GET', `/produtos/${idA}`, tokens.adminB).then(resGet => {
-        expect(resGet.status).to.equal(404);
-      });
+  // --- 4. TENTATIVA DE BYPASS VIA UPDATE ---
+  it('Deve impedir alteração de Usuário de outro tenant', () => {
+    cy.requestAs('PUT', `/usuarios/${tenants.livros.userId}`, tokens.moda, {
+      nome: "Hacker",
+      email: "hacker@moda.com"
+    }).then(res => {
+      expect(res.status).to.be.oneOf([404, 403]);
     });
   });
 });
