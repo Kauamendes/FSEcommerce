@@ -13,7 +13,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByEmail(String email);
 
-    @Query(nativeQuery = true, value = "SELECT u FROM Usuario u where u.email=:email")
+    @Query(nativeQuery = true, value = "SELECT * FROM Usuario u where u.email=:email")
     Optional<Usuario> findByEmailSemTenant(@Param("email") String email);
 
     @Modifying

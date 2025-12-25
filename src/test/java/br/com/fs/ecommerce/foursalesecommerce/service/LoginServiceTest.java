@@ -51,7 +51,7 @@ class LoginServiceTest extends AbstractH2Test {
         usuario.setEmail("erro@loja.com");
         usuario.setNome("nome");
         usuario.setSenha(passwordEncoder.encode("correta"));
-        usuario.setTenantId(DEFAULT_TENANT_ID);
+        usuario.setRole(UserRole.ROLE_USUARIO);
         usuarioRepository.save(usuario);
 
         LoginDto loginDto = new LoginDto("erro@loja.com", "errada");
