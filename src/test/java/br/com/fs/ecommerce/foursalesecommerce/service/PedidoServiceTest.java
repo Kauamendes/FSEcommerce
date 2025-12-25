@@ -1,11 +1,14 @@
 package br.com.fs.ecommerce.foursalesecommerce.service;
 
 import br.com.fs.ecommerce.foursalesecommerce.AbstractH2Test;
-import br.com.fs.ecommerce.foursalesecommerce.domain.*;
-import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaDto;
+import br.com.fs.ecommerce.foursalesecommerce.domain.Pedido;
+import br.com.fs.ecommerce.foursalesecommerce.domain.Produto;
+import br.com.fs.ecommerce.foursalesecommerce.domain.Status;
+import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoProdutoDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
+import br.com.fs.ecommerce.foursalesecommerce.dto.UsuarioDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.PedidoJaPagoException;
 import br.com.fs.ecommerce.foursalesecommerce.repository.PedidoRepository;
 import br.com.fs.ecommerce.foursalesecommerce.repository.ProdutoRepository;
@@ -33,22 +36,29 @@ class PedidoServiceTest extends AbstractH2Test {
 
     @Test
     void deve_salvar_pedido_e_reservar_estoque() {
-        Categoria categoria = new Categoria(1L, "test", "teste", true);
-        Produto produto = produtoRepository.save(new Produto(null, "SSD", "", BigDecimal.TEN, categoria, 10, 0, null, true));
+        Long produtoId = 301L;
+        Produto produtoAntes = produtoRepository.findById(produtoId).orElseThrow();
+        int reservaOriginal = produtoAntes.getQuantidadeReservada();
+
+        ProdutoDto produtoDto = ProdutoDto.of(produtoAntes);
 
         PedidoDto dto = new PedidoDto();
+        dto.setUsuario(UsuarioDto.builder().id(101L).build());
         dto.setStatus(Status.PENDENTE);
-        dto.setPedidoProdutos(List.of(new PedidoProdutoDto(null,
-                PedidoDto.builder().build(),
-                ProdutoDto.builder().id(produto.getId()).categoria(CategoriaDto.builder().id(200L).build()).build(),
+        dto.setPedidoProdutos(List.of(new PedidoProdutoDto(
+                null,
+                null,
+                produtoDto,
                 2,
-                BigDecimal.TEN)));
+                BigDecimal.valueOf(129.90))));
 
         Pedido pedido = pedidoService.salvar(dto);
+        produtoRepository.flush();
 
         assertNotNull(pedido.getId());
-        Produto produtoAposReserva = produtoRepository.findById(produto.getId()).orElseThrow();
-        assertEquals(2, produtoAposReserva.getQuantidadeReservada());
+        Produto produtoAposReserva = produtoRepository.findById(produtoId).orElseThrow();
+
+        assertEquals(reservaOriginal + 2, produtoAposReserva.getQuantidadeReservada());
     }
 
     @Test

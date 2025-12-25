@@ -6,13 +6,11 @@ import br.com.fs.ecommerce.foursalesecommerce.domain.Produto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.PedidoProdutoDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
 import br.com.fs.ecommerce.foursalesecommerce.repository.ProdutoRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,19 +25,7 @@ class EstoqueComponentTest extends AbstractH2Test {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    private Long produtoId;
-
-    @BeforeEach
-    void prepareData() {
-        Produto produto = new Produto();
-        produto.setNome("Monitor 144hz");
-        produto.setQuantidade(10);
-        produto.setQuantidadeReservada(0);
-        produto.setPreco(BigDecimal.TEN);
-
-        produto = produtoRepository.save(produto);
-        produtoId = produto.getId();
-    }
+    private Long produtoId = 300L;
 
     @Test
     void deve_reservar_estoque_usando_tenant_padrao() {
