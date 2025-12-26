@@ -31,6 +31,10 @@ public class EstoqueComponent {
         Map<Long, Produto> produtosMap = produtoRepository.findAllByIdComTenant(produtoIds).stream()
                 .collect(Collectors.toMap(Produto::getId, produto -> produto));
 
+        if (produtosMap.size() != produtoIds.size()) {
+            throw new RegistroNaoEncontradoException("Produto");
+        }
+
         for (PedidoProdutoDto pedidoProduto : pedidoProdutos) {
             Produto produto = produtosMap.get(pedidoProduto.getProduto().getId());
 

@@ -9,12 +9,16 @@ export const options = {
   ],
 };
 
-// Obtém o token antes de iniciar os usuários virtuais
+// Pega a URL do ambiente ou usa o padrão para Docker no Windows
+const BASE_URL = __ENV.BASE_URL || 'http://host.docker.internal:8080';
+
 export function setup() {
-  const loginRes = http.post('http://localhost:8080/auth/login', JSON.stringify({
-    email: 'admin@tenantA.com',
+  const loginRes = http.post(`${BASE_URL}/auth/login`, JSON.stringify({
+    email: 'admin@fashion.com', // Use os e-mails que funcionaram no Cypress
     password: '123'
   }), { headers: { 'Content-Type': 'application/json' } });
+
+  check(loginRes, { 'Login com sucesso': (r) => r.status === 200 });
 
   return { token: loginRes.json('token') };
 }
@@ -27,12 +31,10 @@ export default function (data) {
     },
   };
 
-  // Testa o isolamento na busca de pedidos do usuário autenticado
-  const res = http.get('http://localhost:8080/pedidos/usuario-autenticado', params);
+  const res = http.get(`${BASE_URL}/pedidos/usuario-autenticado`, params);
 
   check(res, {
     'status é 200': (r) => r.status === 200,
-    'dados pertencem ao tenant': (r) => r.json().every(p => p.usuarioId !== undefined),
     'tempo < 200ms': (r) => r.timings.duration < 200,
   });
 

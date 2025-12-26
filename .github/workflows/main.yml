@@ -6,6 +6,22 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    # Adicionamos o serviço do Postgres para o CI ter um banco real
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: fsecommerce
+          POSTGRES_USER: usuario
+          POSTGRES_PASSWORD: senha
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
 
@@ -25,17 +41,30 @@ jobs:
         run: mvn test
 
       - name: Build and Start Spring Boot App
+        env:
+          # Passamos as credenciais do banco para a aplicação Java
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/fsecommerce
+          SPRING_DATASOURCE_USERNAME: usuario
+          SPRING_DATASOURCE_PASSWORD: senha
         run: |
           mvn clean package -DskipTests
           java -jar target/*.jar &
-          npx wait-on http://localhost:8080 --timeout 60000
+          # O wait-on garante que os testes só rodem quando a API estiver pronta
+          npx wait-on http://localhost:8080/actuator/health --timeout 60000 
 
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
+          # Se os arquivos estiverem na pasta de recursos, informe o project-path
+          project-path: ./src/test/resources/cypress
           browser: chrome
+        env:
+          CYPRESS_BASE_URL: http://localhost:8080
 
       - name: Run k6 Stress Test
         uses: grafana/k6-action@v0.3.1
         with:
-          filename: stress-test.js
+          # Ajuste o caminho conforme sua estrutura de pastas
+          filename: src/test/resources/k6/scripts/stress-test.js
+        env:
+          BASE_URL: http://localhost:8080

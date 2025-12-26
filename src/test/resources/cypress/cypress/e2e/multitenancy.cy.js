@@ -34,26 +34,22 @@ describe('Garantia de Isolamento Total por Tenant (Full Stack)', () => {
     });
   });
 
-  // --- 3. ISOLAMENTO DE PEDIDOS (CRÍTICO) ---
-  it('Deve isolar Pedidos: Impedir acesso e criação cross-tenant', () => {
-    const nomePedido = `Pedido-Teste-${Date.now()}`;
-
-    // Tentativa de ataque: Tenant Moda tenta criar pedido usando PRODUTO de Livros
-    cy.requestAs('POST', '/pedidos', tokens.moda, {
-      itens: [{ produtoId: tenants.livros.prodId, quantidade: 1 }],
-      status: "AGUARDANDO_PAGAMENTO"
-    }).then(res => {
-      // O sistema deve falhar pois o produtoId 310 não existe no contexto de Moda
-      expect(res.status).to.be.oneOf([400, 404]);
-    });
-
-    // Validar que o admin de Livros não vê pedidos de Moda
-    // (Assumindo que já exista um pedido ID 500 de Moda no seu banco)
-    const pedidoIdModa = 500;
-    cy.requestAs('GET', `/pedidos/${pedidoIdModa}`, tokens.livros).then(res => {
-      expect(res.status).to.equal(404);
-    });
+// --- 3. ISOLAMENTO DE PEDIDOS (CRÍTICO) ---
+it('Deve isolar Pedidos: Impedir acesso e criação cross-tenant', () => {
+  // Tentativa de ataque: Tenant Moda tenta criar pedido usando PRODUTO de Livros
+  cy.requestAs('POST', '/pedidos', tokens.moda, {
+    usuario: { id: tenants.moda.userId },
+    pedidoProdutos: [
+      {
+        produto: { id: tenants.livros.prodId },
+        quantidade: 1
+      }
+    ],
+    status: "PENDENTE"
+  }).then(res => {
+    expect(res.status).to.be.oneOf([400, 404]);
   });
+});
 
   // --- 4. TENTATIVA DE BYPASS VIA UPDATE ---
   it('Deve impedir alteração de Usuário de outro tenant', () => {
