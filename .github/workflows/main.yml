@@ -56,7 +56,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           # Se os arquivos estiverem na pasta de recursos, informe o project-path
-          project-path: ./src/test/resources/cypress
+          working-directory: ./src/test/resources/cypress
           browser: chrome
         env:
           CYPRESS_BASE_URL: http://localhost:8080/fsecommerce
