@@ -77,6 +77,8 @@ class PedidoServiceTest extends AbstractH2Test {
     @Test
     void deve_lancar_excecao_ao_pagar_pedido_ja_pago() {
         Pedido pedido = new Pedido();
+        pedido.setUsuario(Usuario.builder().id(100L).build());
+        pedido.setSubtotal(BigDecimal.TEN);
         pedido.setStatus(Status.PAGO);
         pedido = pedidoRepository.save(pedido);
 
