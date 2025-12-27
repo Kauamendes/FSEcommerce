@@ -52,6 +52,14 @@ jobs:
           sudo mv k6-v0.51.0-linux-amd64/k6 /usr/local/bin/
 
       - name: Run k6 Stress Test
-        run: k6 run src/test/resources/k6/scripts/stress-test.js
+        run: |
+          # Lista os arquivos para debug (ajuda a ver o caminho real se falhar)
+          ls -R src/test/resources/k6
+          
+          # Busca o caminho real do arquivo para evitar erro de digitação
+          SCRIPT_PATH=$(find . -name "stress-test.js" | head -n 1)
+          echo "Executando script encontrado em: $SCRIPT_PATH"
+          
+          k6 run "$SCRIPT_PATH"
         env:
           BASE_URL: http://localhost:8080/fsecommerce
