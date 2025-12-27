@@ -59,7 +59,7 @@ jobs:
           project-path: ./src/test/resources/cypress
           browser: chrome
         env:
-          CYPRESS_BASE_URL: http://localhost:8080
+          CYPRESS_BASE_URL: http://localhost:8080/fsecommerce
 
       - name: Run k6 Stress Test
         uses: grafana/k6-action@v0.3.1
@@ -67,4 +67,4 @@ jobs:
           # Ajuste o caminho conforme sua estrutura de pastas
           filename: src/test/resources/k6/scripts/stress-test.js
         env:
-          BASE_URL: http://localhost:8080
+          BASE_URL: http://localhost:8080/fsecommerce
