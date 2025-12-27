@@ -50,7 +50,7 @@ jobs:
           mvn clean package -DskipTests
           java -jar target/*.jar &
           # O wait-on garante que os testes só rodem quando a API estiver pronta
-          npx wait-on http://localhost:8080/actuator/health --timeout 60000 
+          npx wait-on http://localhost:8080/fsecommerce/actuator/health --timeout 60000 
 
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
