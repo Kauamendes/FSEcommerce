@@ -40,3 +40,5 @@ export default function (data) {
 
   sleep(0.5);
 }
+
+//docker run --rm -i -v "${PWD}:/scripts" grafana/k6 run /scripts/stress-test.js dentro da pasta onde esta o script

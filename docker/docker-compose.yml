@@ -4,8 +4,8 @@ services:
     container_name: fsecommerce-db
     environment:
       POSTGRES_DB: fsecommerce
-      POSTGRES_USER: usuario
-      POSTGRES_PASSWORD: senha
+      POSTGRES_USER: ecommerce_user
+      POSTGRES_PASSWORD: ecommerce_password
     ports:
       - "5432:5432"
     healthcheck:
@@ -13,24 +13,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    networks:
-      - ecommerce-network
-
-  k6:
-    image: grafana/k6
-    container_name: fsecommerce-loadtest
-    volumes:
-      - ./scripts:/scripts:ro
-    environment:
-      - BASE_URL=http://host.docker.internal:8080
-    # O entrypoint chama o arquivo correto que você criou
-    entrypoint: [ "k6", "run", "/scripts/stress-test.js" ]
-    networks:
-      - ecommerce-network
-    depends_on:
-      db:
-        condition: service_healthy
-
-networks:
-  ecommerce-network:
-    driver: bridge
