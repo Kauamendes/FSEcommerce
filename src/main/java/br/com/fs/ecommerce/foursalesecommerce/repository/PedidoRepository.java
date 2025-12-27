@@ -13,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
@@ -24,6 +25,10 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findAllByUsuarioId(Long usuarioId);
 
     List<Pedido> findAllByUsuarioEmail(String email);
+
+    Optional<Pedido> findOneById(Long id);
+
+    boolean existsOneById(Long id);
 
     @Query("SELECT new br.com.fs.ecommerce.foursalesecommerce.dto.TopCompradorDto(u.id, u.nome, COUNT(p.id), SUM(p.subtotal)) " +
             "FROM Pedido p JOIN p.usuario u " +

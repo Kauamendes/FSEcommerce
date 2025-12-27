@@ -1,4 +1,3 @@
-
 CREATE TABLE tenants (
     id BIGINT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
@@ -7,7 +6,7 @@ CREATE TABLE tenants (
     criado_por VARCHAR(255) NOT NULL,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     alterado_por VARCHAR(255) NOT NULL,
-    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
+    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE usuario (
@@ -21,9 +20,9 @@ CREATE TABLE usuario (
     criado_por VARCHAR(255) NOT NULL,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     alterado_por VARCHAR(255) NOT NULL,
-    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT uk_usuario_email_tenant UNIQUE (email, tenant_id),
-    FOREIGN KEY (tenant_id) REFERENCES tenants (id)
+    CONSTRAINT fk_usuario_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id)
 );
 
 CREATE TABLE categoria (
@@ -35,8 +34,8 @@ CREATE TABLE categoria (
     criado_por VARCHAR(255) NOT NULL,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     alterado_por VARCHAR(255) NOT NULL,
-    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (tenant_id) REFERENCES tenants (id)
+    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT fk_categoria_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id)
 );
 
 CREATE TABLE produto (
@@ -52,9 +51,9 @@ CREATE TABLE produto (
     criado_por VARCHAR(255) NOT NULL,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     alterado_por VARCHAR(255) NOT NULL,
-    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (categoria_id) REFERENCES categoria (id),
-    FOREIGN KEY (tenant_id) REFERENCES tenants (id)
+    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT fk_produto_categoria FOREIGN KEY (categoria_id) REFERENCES categoria (id),
+    CONSTRAINT fk_produto_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id)
 );
 
 CREATE TABLE pedido (
@@ -66,9 +65,9 @@ CREATE TABLE pedido (
     criado_por VARCHAR(255) NOT NULL,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     alterado_por VARCHAR(255) NOT NULL,
-    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuario (id),
-    FOREIGN KEY (tenant_id) REFERENCES tenants (id)
+    alterado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT fk_pedido_usuario FOREIGN KEY (usuario_id) REFERENCES usuario (id),
+    CONSTRAINT fk_pedido_tenant FOREIGN KEY (tenant_id) REFERENCES tenants (id)
 );
 
 CREATE TABLE pedido_produto (
@@ -77,10 +76,9 @@ CREATE TABLE pedido_produto (
     produto_id BIGINT NOT NULL,
     quantidade INT NOT NULL,
     preco_unitario DECIMAL(10,2) NOT NULL,
-    FOREIGN KEY (pedido_id) REFERENCES pedido(id) ON DELETE CASCADE,
-    FOREIGN KEY (produto_id) REFERENCES produto(id) ON DELETE CASCADE
+    CONSTRAINT fk_pp_pedido FOREIGN KEY (pedido_id) REFERENCES pedido(id) ON DELETE CASCADE,
+    CONSTRAINT fk_pp_produto FOREIGN KEY (produto_id) REFERENCES produto(id) ON DELETE CASCADE
 );
-
 
 CREATE INDEX idx_usuario_tenant_email ON usuario (tenant_id, email);
 CREATE INDEX idx_categoria_tenant_nome ON categoria (tenant_id, nome);

@@ -1,0 +1,15 @@
+{
+  "name": "fsecommerce",
+  "version": "1.0.0",
+  "description": "Este é um projeto de ecommerce desenvolvido com **Spring Boot 3**. Ele utiliza um banco de dados **MySQL** para armazenamento de dados e inclui uma configuração inicial para popular o banco de dados automaticamente ao rodar o projeto. A documentação da API é gerada automaticamente pelo **Swagger UI**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^15.8.1"
+  }
+}

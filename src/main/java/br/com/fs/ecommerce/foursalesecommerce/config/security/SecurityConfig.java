@@ -30,6 +30,7 @@ public class SecurityConfig {
     private final SecurityFilter securityFilter;
     public static final String ROTA_PRODUTOS = "/produtos/**";
     public static final String ROTA_CATEGORIAS = "/categorias/**";
+    public static final String ROTA_USUARIOS = "/usuarios/**";
     public static final String AUTH_LOGIN = "/auth/login";
 
     @Bean
@@ -39,6 +40,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, AUTH_LOGIN).permitAll()
@@ -48,6 +50,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, ROTA_CATEGORIAS).hasAuthority(UserRole.ROLE_ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, ROTA_CATEGORIAS).hasAuthority(UserRole.ROLE_ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, ROTA_CATEGORIAS).hasAuthority(UserRole.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, ROTA_USUARIOS).hasAuthority(UserRole.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, ROTA_USUARIOS).hasAuthority(UserRole.ROLE_ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, ROTA_USUARIOS).hasAuthority(UserRole.ROLE_ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

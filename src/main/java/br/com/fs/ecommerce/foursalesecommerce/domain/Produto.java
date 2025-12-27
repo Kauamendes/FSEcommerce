@@ -3,18 +3,14 @@ package br.com.fs.ecommerce.foursalesecommerce.domain;
 import br.com.fs.ecommerce.foursalesecommerce.annotations.Tsid;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.ProdutoUpdateDto;
-import br.com.fs.ecommerce.foursalesecommerce.support.TsidIdentifierGenerator;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.IdGeneratorType;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.Objects.isNull;
 
@@ -44,7 +40,8 @@ public class Produto extends TenantEntity {
     private Integer quantidade;
 
     @Column(name = "quantidade_reservada")
-    private Integer quantidadeReservada;
+    @Builder.Default
+    private Integer quantidadeReservada = 0;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
@@ -52,7 +49,6 @@ public class Produto extends TenantEntity {
     private List<PedidoProduto> pedidoProdutos = new ArrayList<>();
 
     private Boolean ativo;
-    private LocalDateTime excluidoEm;
 
     public static Produto of(ProdutoDto produtoDto) {
         if (isNull(produtoDto)) return null;

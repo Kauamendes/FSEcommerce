@@ -5,7 +5,7 @@ import br.com.fs.ecommerce.foursalesecommerce.domain.Usuario;
 import br.com.fs.ecommerce.foursalesecommerce.dto.AuthDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.LoginDto;
 import br.com.fs.ecommerce.foursalesecommerce.exception.EmailOuSenhaIncorretoException;
-import br.com.fs.ecommerce.foursalesecommerce.service.UsuarioService;
+import br.com.fs.ecommerce.foursalesecommerce.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final UsuarioService usuarioService;
+    private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
     public AuthDto logar(LoginDto loginDto) {
-        Usuario usuario = usuarioService.buscarPorEmail(loginDto.getEmail());
+        Usuario usuario = usuarioRepository.findByEmailSemTenant(loginDto.getEmail()).orElseThrow();
 
         if (passwordEncoder.matches(loginDto.getSenha(), usuario.getSenha())) {
             return AuthDto.builder()

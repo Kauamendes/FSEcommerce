@@ -5,12 +5,8 @@ import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaDto;
 import br.com.fs.ecommerce.foursalesecommerce.dto.CategoriaUpdateDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static java.util.Objects.isNull;
 
@@ -29,7 +25,6 @@ public class Categoria extends TenantEntity {
     private String nome;
     private String descricao;
     private Boolean ativo;
-    private LocalDateTime excluidoEm;
 
     public static Categoria of(CategoriaDto categoriaDto) {
         if (isNull(categoriaDto)) return null;

@@ -7,16 +7,21 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Produto p SET p.quantidade = p.quantidade - :quantidade WHERE p.id = :id")
-    void updateQuantidadeById(@Param("id") Long id, @Param("quantidade") Integer quantidade);
+    @Query("UPDATE Produto p SET p.ativo=:ativo WHERE p.id =:id")
+    void updateAtivoById(@Param("id") Long id,
+                         @Param("ativo") boolean ativo);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Produto p SET p.ativo=:ativo, p.excluidoEm=CURRENT_TIMESTAMP WHERE p.id =:id")
-    void updateAtivoAndExcluidoEmById(@Param("id") Long id,
-                                      @Param("ativo") boolean ativo);
+    @Query("SELECT p FROM Produto p WHERE p.id IN :ids")
+    List<Produto> findAllByIdComTenant(@Param("ids") List<Long> ids);
+
+    Optional<Produto> findOneById(Long id);
+
+    boolean existsOneById(Long id);
 }

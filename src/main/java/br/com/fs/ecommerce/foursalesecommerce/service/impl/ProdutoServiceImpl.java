@@ -26,7 +26,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public Optional<Produto> buscarPorId(Long id) {
-        return produtoRepository.findById(id);
+        return produtoRepository.findOneById(id);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public Produto atualizar(Long id, ProdutoUpdateDto produtoDto) {
-       if (!produtoRepository.existsById(id)) {
+        if (!produtoRepository.existsOneById(id)) {
            throw new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id);
        }
 
@@ -45,9 +45,9 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public void excluir(Long id) {
-        if (!produtoRepository.existsById(id)) {
+        if (!produtoRepository.existsOneById(id)) {
             throw new RegistroNaoEncontradoException(Produto.class.getSimpleName(), id);
         }
-        produtoRepository.updateAtivoAndExcluidoEmById(id, false);
+        produtoRepository.updateAtivoById(id, false);
     }
 }

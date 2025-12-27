@@ -13,9 +13,16 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByEmail(String email);
 
+    @Query(nativeQuery = true, value = "SELECT * FROM Usuario u where u.email=:email")
+    Optional<Usuario> findByEmailSemTenant(@Param("email") String email);
+
     @Modifying
     @Transactional
-    @Query("UPDATE Usuario u SET u.ativo=:ativo, u.excluidoEm=CURRENT_TIMESTAMP WHERE u.id =:id")
-    void updateAtivoAndExcluidoEmById(@Param("id") Long id,
-                                      @Param("ativo") boolean ativo);
+    @Query("UPDATE Usuario u SET u.ativo=:ativo WHERE u.id =:id")
+    void updateAtivoById(@Param("id") Long id,
+                         @Param("ativo") boolean ativo);
+
+    Optional<Usuario> findOneById(Long id);
+
+    boolean existsOneById(Long id);
 }
