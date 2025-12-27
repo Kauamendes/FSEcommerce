@@ -35,4 +35,3 @@ build/
 .mvn
 
 node_modules/
-*.json
