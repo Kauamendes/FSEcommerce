@@ -6,21 +6,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:17-alpine
-        env:
-          POSTGRES_DB: fsecommerce
-          POSTGRES_USER: usuario
-          POSTGRES_PASSWORD: senha
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
+    # Removido o service do Postgres para usar H2 interno
     steps:
       - uses: actions/checkout@v4
 
@@ -35,10 +21,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm' # Otimiza o tempo instalando do cache se nada mudou
+          cache: 'npm'
 
       - name: Install Dependencies
-        # Instala as dependências da raiz (onde está seu package-lock.json)
         run: npm ci
 
       - name: Run Unit & Integration Tests (Maven)
@@ -46,19 +31,17 @@ jobs:
 
       - name: Build and Start Spring Boot App
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/fsecommerce
-          SPRING_DATASOURCE_USERNAME: usuario
-          SPRING_DATASOURCE_PASSWORD: senha
+          # Ativa o perfil dev para usar H2
+          SPRING_PROFILES_ACTIVE: dev
         run: |
           mvn clean package -DskipTests
           java -jar target/*.jar &
-          # Espera a API e o Actuator ficarem prontos
+          # O wait-on garante que a API subiu antes dos testes
           npx wait-on http://localhost:8080/fsecommerce/actuator/health --timeout 60000 
 
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
-          # 'project' indica onde está o cypress.config.js
           project: ./src/test/resources/cypress
           install: false
           browser: chrome
